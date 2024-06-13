@@ -1,0 +1,55 @@
+{
+  "meta-llama/Meta-Llama-3-8B-Instruct": {
+    "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "stop_tokens": [
+      "<|eot_id|>",
+      "<|end_of_text|>",
+      "<|starter_header_id|>",
+      "<|end_header_id|>",
+      "assistant"
+    ],
+    "stop_token_ids": [
+      128009,
+      128001,
+      128006,
+      128007,
+      78191
+    ],
+    "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n",
+    "extract_input_with_system_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nA chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
+  },
+  "meta-llama/Meta-Llama-3-70B-Instruct": {
+    "model_name": "meta-llama/Meta-Llama-3-70B-Instruct",
+    "stop_tokens": [
+      "<|eot_id|>",
+      "<|end_of_text|>",
+      "<|starter_header_id|>",
+      "<|end_header_id|>",
+      "assistant"
+    ],
+    "stop_token_ids": [
+      128009,
+      128001,
+      128006,
+      128007,
+      78191
+    ],
+    "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n"
+  },
+  "meta-llama/Llama-2-7b-chat-hf": {
+    "model_name": "meta-llama/Llama-2-7b-chat-hf",
+    "stop_tokens": [
+      "</s>",
+      "<s>",
+      "<unk>",
+      "assistant"
+    ],
+    "stop_token_ids": [
+      2,
+      1,
+      0,
+      20255
+    ],
+    "extract_input": "[INST] "
+  }
+}

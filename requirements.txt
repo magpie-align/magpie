@@ -1,0 +1,29 @@
+# LLM
+#  flash-attn[--no-build-isolation]
+vllm
+transformers
+sentence-transformers
+sentencepiece
+trl
+peft
+datasets
+accelerate
+bitsandbytes
+faiss-gpu
+ml_collections
+autoawq
+ray
+
+# Cloud API & Chat
+fschat
+tenacity
+boto3
+openai
+google-generativeai
+anthropic
+
+# Widgets & Visualization
+matplotlib
+wandb
+ipywidgets
+ipykernel
