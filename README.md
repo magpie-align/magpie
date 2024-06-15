@@ -6,6 +6,7 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🕸️ [**Website**](https://magpie-align.github.io/)
 - 📄 [**Technical Report**](https://arxiv.org/abs/2406.08464)
 
+You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/davanstrien/magpie) to generate instruction-response pairs. Thanks a lot for the quick implementation from @davanstrien!
 
 [![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
