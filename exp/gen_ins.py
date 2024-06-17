@@ -17,13 +17,7 @@ def get_args():
     # Experiment Settings
     parser = argparse.ArgumentParser(description="Instruction Generation Manager.")
     parser.add_argument("--model_path", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct",
-                        choices=[
-                            "meta-llama/Meta-Llama-3-8B-Instruct",
-                            "meta-llama/Meta-Llama-3-70B-Instruct", 
-                            "meta-llama/Llama-2-7b-chat-hf",
-                            "NousResearch/Nous-Hermes-llama-2-7b",
-                            ], help="We will support more models in the future.")
-
+                        help="We will support more models in the future.")
     # Generation Parameters
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument("--top_p", type=float, default=1.0)

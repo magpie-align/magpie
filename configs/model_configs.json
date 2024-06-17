@@ -62,10 +62,36 @@
       1,
       0
     ],
-    "attack_input": "### Instruction:\n\n",
-    "faiss_name": "hermes_mpnet.faiss",
-    "sft_dataset": "teknium/OpenHermes-2.5",
-    "sft_dataset_train_label": "train",
-    "sft_dataset_col_name": "conversations"
+    "extract_input": "### Instruction:\n\n"
+  },
+  "Qwen/Qwen2-72B-Instruct": {
+    "model_name": "Qwen/Qwen2-72B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "Assistant",
+      "assistant"
+    ],
+    "stop_token_ids": [
+      151644,
+      151645,
+      0
+    ],
+    "extract_input": "<|im_start|>user\n"
+  },
+  "Qwen/Qwen2-7B-Instruct": {
+    "model_name": "Qwen/Qwen2-7B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "Assistant",
+      "assistant"
+    ],
+    "stop_token_ids": [
+      151644,
+      151645,
+      0
+    ],
+    "extract_input": "<|im_start|>user\n"
   }
 }

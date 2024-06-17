@@ -17,13 +17,7 @@ def get_args():
     # Experiment Settings
     parser = argparse.ArgumentParser(description="Response Generation Manager.")
     parser.add_argument("--model_path", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct",
-                        choices=[
-                            "meta-llama/Meta-Llama-3-8B-Instruct",
-                            "meta-llama/Meta-Llama-3-70B-Instruct", 
-                            "meta-llama/Llama-2-7b-chat-hf",
-                            "NousResearch/Nous-Hermes-llama-2-7b",
-                            ], help="We will support more models in the future.")
-    
+                        help="We will support more models in the future.")
     parser.add_argument("--input_file", type=str, default=None, help="Input dataset file name")
     parser.add_argument("--batch_size", type=int, default=128, help="Number of samples per batch")
     parser.add_argument("--checkpoint_every", type=int, default=20, help="Save checkpoint every n batches")
