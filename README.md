@@ -1,5 +1,7 @@
 # 🐦 Magpie
 
+[![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This is the official repository for "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)".
 
 - 🤗 [**Huggingface (Models and Datasets)**](https://huggingface.co/Magpie-Align)
@@ -8,11 +10,9 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 
 You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/davanstrien/magpie) to generate instruction-response pairs. Thanks a lot for the quick implementation from @davanstrien!
 
-[![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 Currently, Magpie has been fully tested on the Llama-3 series. Testing is ongoing for model families including Llama-2, Mistral, Qwen, and more. Feel free to submit a pull request to ```configs/model_configs.json``` with more model support.
 
-We hope Magpie can contribute to the democratization of AI. With your help, we can provide more data and enhance the transparency of model alignment processes!
+We hope Magpie can contribute to the democratization of AI. With your help, we can create more data and enhance the transparency of model alignment processes!
 
 ## Abstract
 
