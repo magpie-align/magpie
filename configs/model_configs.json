@@ -12,8 +12,7 @@
       128009,
       128001,
       128006,
-      128007,
-      78191
+      128007
     ],
     "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n",
     "extract_input_with_system_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nA chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
@@ -31,8 +30,7 @@
       128009,
       128001,
       128006,
-      128007,
-      78191
+      128007
     ],
     "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n"
   },
@@ -47,9 +45,27 @@
     "stop_token_ids": [
       2,
       1,
-      0,
-      20255
+      0
     ],
     "extract_input": "[INST] "
+  },
+  "NousResearch/Nous-Hermes-llama-2-7b": {
+    "model_name": "NousResearch/Nous-Hermes-llama-2-7b",
+    "stop_tokens": [
+      "</s>",
+      "<s>",
+      "<unk>",
+      "assistant"
+    ],
+    "stop_token_ids": [
+      2,
+      1,
+      0
+    ],
+    "attack_input": "### Instruction:\n\n",
+    "faiss_name": "hermes_mpnet.faiss",
+    "sft_dataset": "teknium/OpenHermes-2.5",
+    "sft_dataset_train_label": "train",
+    "sft_dataset_col_name": "conversations"
   }
 }

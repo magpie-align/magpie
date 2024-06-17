@@ -15,7 +15,7 @@ autoawq
 ray
 
 # Cloud API & Chat
-fschat
+git+https://github.com/lm-sys/FastChat.git
 tenacity
 boto3
 openai
