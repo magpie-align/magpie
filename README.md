@@ -1,6 +1,8 @@
-# 🐦 Magpie
+<!-- # 🐦 Magpie -->
 
-[![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Magpie](figs/magpie_logo.png)
+
+[![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Data License](https://img.shields.io/badge/Data%20License-CC%20By%20NC%204.0-red.svg)](https://huggingface.co/Magpie-Align) [![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/davanstrien/magpie)
 
 This is the official repository for "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)".
 
@@ -10,13 +12,11 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 
 You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/davanstrien/magpie) to generate instruction-response pairs. Thanks a lot for the quick implementation from @davanstrien!
 
-We hope Magpie can contribute to the democratization of AI. With your help, we can create more data and enhance the transparency of model alignment processes!
+## Magpie Supports
 
-## Magpie supports
+Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to [```configs/model_configs.json```](configs/model_configs.json) with more model support.
 
-Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to ```configs/model_configs.json``` with more model support.
-
-|Model Family | Magpie | magpie Script |
+|Model Family | Magpie | Magpie Script |
 |-------------|:------:|:-------|
 | Llama 3     | ✅ | [8B](scripts/magpie.sh),[70B](scripts/magpie-llama3-70b.sh)
 | Qwen2       | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh)
@@ -30,6 +30,8 @@ Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel 
 - ⭕️: Partially work. We can get something interesting, but may apply a powerful filter and/or a logits processor.
 - ❌: Not work.
 - ❓: Untested.
+
+We hope Magpie can contribute to the democratization of AI. With your help, we can create more data and enhance the transparency of model alignment processes!
 
 ## Abstract
 
