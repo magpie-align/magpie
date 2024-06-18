@@ -10,9 +10,28 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 
 You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/davanstrien/magpie) to generate instruction-response pairs. Thanks a lot for the quick implementation from @davanstrien!
 
-Currently, Magpie has been tested on the Llama-3 and Qwen2 series. Testing is ongoing for model families including Llama-2, Mistral, and more. Feel free to submit a pull request to ```configs/model_configs.json``` with more model support.
-
 We hope Magpie can contribute to the democratization of AI. With your help, we can create more data and enhance the transparency of model alignment processes!
+
+## Magpie supports
+
+Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to ```configs/model_configs.json``` with more model support.
+
+|Model Family | Magpie Support |
+|-------------|:----------|
+| Llama 3     | ✅        | 
+| Llama 2     | ⭕️        | 
+| Qwen-2      | ✅        |
+| Qwen-1.5    | ❌        |
+| Gemma       | ⭕️        |
+| Mistral     | ⭕️        |
+| Falcon      | ❓        |
+| Phi         | ❓        |
+| Yi          | ❓        |
+
+- ✅: Works so great!
+- ⭕️: Partially work. We can get something interesting, but may apply a powerful filter and/or a logits processor.
+- ❌: Not work.
+- ❓: Untested.
 
 ## Abstract
 

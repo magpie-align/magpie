@@ -23,14 +23,14 @@ def get_args():
     parser.add_argument("--checkpoint_every", type=int, default=20, help="Save checkpoint every n batches")
     parser.add_argument("--api", type=bool, default=False, help="Use API to generate responses")
     parser.add_argument("--api_url", type=str, default="https://api.together.xyz/v1/chat/completions", help="API URL")
-    parser.add_argument("--api_key", type=str, default=None)
+    parser.add_argument("--api_key", type=str, default=None, help="Together API Key")
     parser.add_argument("--offline", action="store_false", dest="api", help="Use local vllm engine")
 
     # Generation Parameters
     parser.add_argument("--device", type=str, default="0")
     parser.add_argument("--tensor_parallel_size", type=int, default=1, help="Number of GPUs to use for tensor parallelism. Only used for Llama 70B models.")
     parser.add_argument("--gpu_memory_utilization", type=float, default=0.95)
-    parser.add_argument("--max_tokens", type=int, default=2048)
+    parser.add_argument("--max_tokens", type=int, default=4096)
     parser.add_argument("--max_model_len", type=int, default=4096)
     parser.add_argument("--temperature", type=float, default=0)
     parser.add_argument("--top_p", type=float, default=1.0)

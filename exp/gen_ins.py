@@ -24,7 +24,8 @@ def get_args():
     parser.add_argument("--n", type=int, default=200, help="Number of samples to generate for one time.")
     parser.add_argument("--repeat", type=int, default=None, help="Number of times to repeat the instruction generation. Only available when total prompts is not specified.")
     parser.add_argument("--total_prompts", type=int, default=1000, help="Total number of prompts to generate. If specified, repeat will be ignored.")
-    parser.add_argument("--max_tokens", type=int, default=512)
+    parser.add_argument("--max_tokens", type=int, default=2048)
+    parser.add_argument("--max_model_len", type=int, default=4096)
     parser.add_argument("--early_stopping", type=bool, default=True, help="Stop generation when the \n is generated.")
     parser.add_argument("--disable_early_stopping", action="store_false", dest="early_stopping", help="Disable early stopping.")
     parser.add_argument("--have_system_prompt", type=bool, default=False, help="Use system prompt for extracting the input. Recommend disabling it.")
@@ -83,6 +84,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 llm = LLM(model=args.model_path, 
         dtype=args.dtype,
         gpu_memory_utilization=args.gpu_memory_utilization,
+        max_model_len=args.max_model_len,
         swap_space=args.swap_space,
         tensor_parallel_size=args.tensor_parallel_size,
         seed=args.seed if args.seed is not None else args.timestamp)
