@@ -5,14 +5,16 @@
       "<|eot_id|>",
       "<|end_of_text|>",
       "<|starter_header_id|>",
-      "<|end_header_id|>",
-      "assistant"
+      "<|end_header_id|>"
     ],
     "stop_token_ids": [
       128009,
       128001,
       128006,
       128007
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
     ],
     "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n",
     "extract_input_with_system_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nA chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
@@ -23,8 +25,7 @@
       "<|eot_id|>",
       "<|end_of_text|>",
       "<|starter_header_id|>",
-      "<|end_header_id|>",
-      "assistant"
+      "<|end_header_id|>"
     ],
     "stop_token_ids": [
       128009,
@@ -32,20 +33,26 @@
       128006,
       128007
     ],
-    "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n"
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n",
+    "extract_input_with_system_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nA chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
   },
   "meta-llama/Llama-2-7b-chat-hf": {
     "model_name": "meta-llama/Llama-2-7b-chat-hf",
     "stop_tokens": [
       "</s>",
       "<s>",
-      "<unk>",
-      "assistant"
+      "<unk>"
     ],
     "stop_token_ids": [
       2,
       1,
       0
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
     ],
     "extract_input": "[INST] "
   },
@@ -54,13 +61,15 @@
     "stop_tokens": [
       "</s>",
       "<s>",
-      "<unk>",
-      "assistant"
+      "<unk>"
     ],
     "stop_token_ids": [
       2,
       1,
       0
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
     ],
     "extract_input": "### Instruction:\n\n"
   },
@@ -69,13 +78,16 @@
     "stop_tokens": [
       "<|im_start|>",
       "<|im_end|>",
-      "Assistant",
-      "assistant"
+      "<|endoftext|>"
     ],
     "stop_token_ids": [
+      151643,
       151644,
-      151645,
-      0
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
     ],
     "extract_input": "<|im_start|>user\n"
   },
@@ -84,14 +96,55 @@
     "stop_tokens": [
       "<|im_start|>",
       "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
       "Assistant",
       "assistant"
     ],
-    "stop_token_ids": [
-      151644,
-      151645,
-      0
-    ],
     "extract_input": "<|im_start|>user\n"
+  },
+  "mistralai/Mistral-7B-Instruct-v0.3": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
+    "stop_tokens": [
+      "<s>",
+      "</s>",
+      "[INST]",
+      "[/INST]"
+    ],
+    "stop_token_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<s> [INST] "
+  },
+  "google/gemma-1.1-7b-it": {
+    "model_name": "google/gemma-1.1-7b-it",
+    "stop_tokens": [
+      "<eos>",
+      "<bos>",
+      "<start_of_turn>",
+      "<end_of_turn>"
+    ],
+    "stop_token_ids": [
+      1,
+      2,
+      106,
+      107
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<bos><start_of_turn>user\n"
   }
 }

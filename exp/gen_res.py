@@ -56,7 +56,7 @@ SAVED_FILE = f"{INPUT_FILE_NAME[:INPUT_FILE_NAME.rfind('.')]}_res.json"
 with open("../configs/model_configs.json", "r") as f:
     model_configs = json.load(f)
     model_config = model_configs[args.model_path]
-    stop_tokens = model_config["stop_tokens"][:-1] # Remove the last "Assistant" token
+    stop_tokens = model_config["stop_tokens"]
     stop_token_ids = model_config["stop_token_ids"]
 
 # API Setups
