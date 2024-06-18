@@ -28,6 +28,7 @@ def get_args():
 
     # Generation Parameters
     parser.add_argument("--device", type=str, default="0")
+    parser.add_argument("--dtype", type=str, default="bfloat16", choices=["float16", "bfloat16"])
     parser.add_argument("--tensor_parallel_size", type=int, default=1, help="Number of GPUs to use for tensor parallelism. Only used for Llama 70B models.")
     parser.add_argument("--gpu_memory_utilization", type=float, default=0.95)
     parser.add_argument("--max_tokens", type=int, default=4096)
@@ -190,6 +191,7 @@ def main():
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
         print("Start Local vllm engine...")
         llm =  LLM(model=MODEL_NAME, 
+            dtype=args.dtype,
             trust_remote_code=True,
             max_model_len = args.max_model_len, # limited by kv-cache 
             tensor_parallel_size = args.tensor_parallel_size,

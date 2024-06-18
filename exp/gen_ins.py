@@ -83,6 +83,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 # Create vllm instance  
 llm = LLM(model=args.model_path, 
         dtype=args.dtype,
+        trust_remote_code=True,
         gpu_memory_utilization=args.gpu_memory_utilization,
         max_model_len=args.max_model_len,
         swap_space=args.swap_space,
