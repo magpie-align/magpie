@@ -164,5 +164,86 @@
       "assistant"
     ],
     "extract_input": "<bos><start_of_turn>user\n"
+  },
+  "microsoft/Phi-3-mini-128k-instruct": {
+    "model_name": "microsoft/Phi-3-mini-128k-instruct",
+    "stop_tokens": [
+      "</s>",
+      "<s>",
+      "<unk>",
+      "<|endoftext|>",
+      "<|user|>",
+      "<|assistant|>",
+      "<|system|>",
+      "<|end|>"
+    ],
+    "stop_token_ids": [
+      2,
+      1,
+      0,
+      32000,
+      32001,
+      32006,
+      32007,
+      32010
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<s> <|user|>\n"
+  },
+  "microsoft/Phi-3-small-128k-instruct": {
+    "model_name": "microsoft/Phi-3-small-128k-instruct",
+    "stop_tokens": [
+      "</s>",
+      "<s>",
+      "<unk>",
+      "<|endoftext|>",
+      "<|user|>",
+      "<|assistant|>",
+      "<|system|>",
+      "<|end|>"
+    ],
+    "stop_token_ids": [
+      2,
+      1,
+      0,
+      32000,
+      32001,
+      32006,
+      32007,
+      32010
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<s> <|user|>\n"
+  },
+  "microsoft/Phi-3-medium-128k-instruct": {
+    "model_name": "microsoft/Phi-3-medium-128k-instruct",
+    "stop_tokens": [
+      "</s>",
+      "<s>",
+      "<unk>",
+      "<|endoftext|>",
+      "<|user|>",
+      "<|assistant|>",
+      "<|system|>",
+      "<|end|>"
+    ],
+    "stop_token_ids": [
+      2,
+      1,
+      0,
+      32000,
+      32001,
+      32006,
+      32007,
+      32010
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<s> <|user|>\n"
   }
 }

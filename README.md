@@ -22,10 +22,10 @@ Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel 
 | Llama 2     | ⭕️        | 
 | Qwen-2      | ✅        |
 | Qwen-1.5    | ❌        |
+| Phi 3       | ✅        |
 | Gemma       | ⭕️        |
 | Mistral     | ⭕️        |
 | Falcon      | ❓        |
-| Phi         | ❓        |
 | Yi          | ❓        |
 
 - ✅: Works so great!
