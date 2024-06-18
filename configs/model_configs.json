@@ -54,7 +54,7 @@
     "stop_tokens_assistant": [
       "assistant"
     ],
-    "extract_input": "[INST] "
+    "extract_input": "<s> [INST] "
   },
   "NousResearch/Nous-Hermes-llama-2-7b": {
     "model_name": "NousResearch/Nous-Hermes-llama-2-7b",
@@ -245,5 +245,22 @@
       "assistant"
     ],
     "extract_input": "<s> <|user|>\n"
+  },
+  "01-ai/Yi-1.5-34B-Chat": {
+    "model_name": "01-ai/Yi-1.5-34B-Chat",
+    "stop_tokens": [
+      "<|startoftext|>",
+      "<|endoftext|>",
+      "<|im_end|>"
+    ],
+    "stop_token_ids": [
+      1,
+      2,
+      7
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<|startoftext|><|im_start|>user\n"
   }
 }

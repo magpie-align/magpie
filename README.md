@@ -16,17 +16,15 @@ We hope Magpie can contribute to the democratization of AI. With your help, we c
 
 Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to ```configs/model_configs.json``` with more model support.
 
-|Model Family | Magpie Support |
-|-------------|:----------|
-| Llama 3     | ✅        | 
-| Llama 2     | ⭕️        | 
-| Qwen-2      | ✅        |
-| Qwen-1.5    | ❌        |
-| Phi 3       | ✅        |
-| Gemma       | ⭕️        |
-| Mistral     | ⭕️        |
-| Falcon      | ❓        |
-| Yi          | ❓        |
+|Model Family | Magpie | magpie Script |
+|-------------|:------:|:-------|
+| Llama 3     | ✅ | [8B](scripts/magpie.sh),[70B](scripts/magpie-llama3-70b.sh)
+| Qwen2       | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh)
+| Phi 3       | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh)
+| Llama 2     | ⭕️ | [7B](scripts/magpie-llama2-7b.sh)
+| Gemma       | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
+| Mistral     | ⭕️ | [7B](scripts/magpie-mistral7b.sh)
+| Yi          | ⭕️ | [34B](scripts/magpie-yi34b.sh)
 
 - ✅: Works so great!
 - ⭕️: Partially work. We can get something interesting, but may apply a powerful filter and/or a logits processor.

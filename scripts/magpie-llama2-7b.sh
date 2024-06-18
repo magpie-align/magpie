@@ -1,4 +1,4 @@
-model_path=${1:-"meta-llama/Meta-Llama-3-8B-Instruct"}
+model_path=${1:-"meta-llama/Llama-2-7b-chat-hf"}
 total_prompts=${2:-1000}
 ins_topp=${3:-1}
 ins_temp=${4:-1}
