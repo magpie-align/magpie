@@ -1,9 +1,11 @@
 input_file=${1:-"none"}
 tag_mission=${2:-"all"}
-model_path=${2:-"meta-llama/Meta-Llama-3-8B-Instruct"}
-res_rep=1
-device="0"
+device=${3:-"0"}
+model_path=${4:-"meta-llama/Meta-Llama-3-8B-Instruct"}
+guard_model_path="meta-llama/Meta-Llama-Guard-2-8B"
+reward_model_path="sfairXC/FsfairX-LLaMA3-RM-v0.1"
 tensor_parallel=1
+res_rep=1
 gpu_memory_utilization=0.95
 batch_size=1000
 
@@ -92,4 +94,49 @@ if [ $tag_mission == "classification" ] || [ $tag_mission == "all" ]; then
     task_tag_file="${input_file_dir}/${input_file_name_no_ext}_category.${input_file_ext}"
     input_file=$task_tag_file
     echo "[magpie.sh] Task Tagged File: $input_file"
+fi
+
+if [ $tag_mission == "safety" ] || [ $tag_mission == "all" ]; then
+    echo "[magpie.sh] Start Generating Safety Tags..."
+    CUDA_VISIBLE_DEVICES=$device python ../exp/unitag.py \
+        --device $device \
+        --guard_model_path $guard_model_path \
+        --input_file $input_file \
+        --tag_mission "safety" \
+        --tensor_parallel $tensor_parallel \
+        --gpu_memory_utilization $gpu_memory_utilization \
+        --batch_size $batch_size \
+
+    echo "[magpie.sh] Finish Generating Safety Tags!"
+
+    # Change input file name to quality tagged file
+    input_file_name=$(basename $input_file)
+    input_file_dir=$(dirname $input_file)
+    input_file_name_no_ext="${input_file_name%.*}"
+    input_file_ext="${input_file_name##*.}"
+    safety_tag_file="${input_file_dir}/${input_file_name_no_ext}_safety.${input_file_ext}"
+    input_file=$safety_tag_file
+    echo "[magpie.sh] Safety Tagged File: $input_file"
+fi
+
+if [ $tag_mission == "reward" ] || [ $tag_mission == "all" ]; then
+    echo "[magpie.sh] Start Generating Reward Tags..."
+    CUDA_VISIBLE_DEVICES=$device python ../exp/unitag.py \
+        --device $device \
+        --reward_model_path $reward_model_path \
+        --input_file $input_file \
+        --tag_mission "reward" \
+        --tensor_parallel $tensor_parallel \
+        --batch_size 1 \
+
+    echo "[magpie.sh] Finish Generating Reward Tags!"
+
+    # Change input file name to quality tagged file
+    input_file_name=$(basename $input_file)
+    input_file_dir=$(dirname $input_file)
+    input_file_name_no_ext="${input_file_name%.*}"
+    input_file_ext="${input_file_name##*.}"
+    reward_tag_file="${input_file_dir}/${input_file_name_no_ext}_reward.${input_file_ext}"
+    input_file=$reward_tag_file
+    echo "[magpie.sh] Reward Tagged File: $input_file"
 fi

@@ -4,7 +4,9 @@ import warnings
 import concurrent.futures
 from tqdm import tqdm
 import argparse
+import torch
 from vllm import LLM, SamplingParams
+from transformers import AutoTokenizer, pipeline
 from utils import load_jsonl_to_list, load_dataset_from_file, save_dataset
 from utils import make_api_request_with_retry
 from str_utils import input_difficulty_rating, input_classification, input_quality_rating
@@ -16,8 +18,10 @@ from utils import get_conversation_template
 def get_args():
     # Experiment Settings
     parser = argparse.ArgumentParser(description="Unified Tagging Manager.")
-    parser.add_argument("--tag_mission", type=str, default="quality", help="The tagging mission.", choices=["difficulty", "quality", "classification"])
+    parser.add_argument("--tag_mission", type=str, default="quality", help="The tagging mission.", choices=["difficulty", "quality", "classification", "safety", "reward"])
     parser.add_argument("--model_path", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="Tag Model.")
+    parser.add_argument("--guard_model_path", type=str, default="meta-llama/Meta-Llama-Guard-2-8B", help="Guard Model.")
+    parser.add_argument("--reward_model_path", type=str, default="sfairXC/FsfairX-LLaMA3-RM-v0.1", help="Reward Model.")
     parser.add_argument("--input_file", type=str, default=None, help="Input dataset file name")
     parser.add_argument("--batch_size", type=int, default=1000, help="Number of samples per batch. Online <100, Offline <200.")
     parser.add_argument("--checkpoint_every", type=int, default=40, help="Save checkpoint every n batches")
@@ -35,10 +39,8 @@ def get_args():
     parser.add_argument("--dtype", type=str, default="bfloat16", choices=["float16", "bfloat16"])
     parser.add_argument("--quantization", type=str, default="fp8", choices=["fp8", "awq", "gptq", None])
     parser.add_argument("--kv_cache_dtype", type=str, default="auto", choices=["auto", "fp8"])
-    parser.add_argument("--max_model_len", type=int, default=1024)
+    parser.add_argument("--max_model_len", type=int, default=4096)
     parser.add_argument("--gpu_memory_utilization", type=float, default=0.95)
-    parser.add_argument("--low_mem_gpu", type=bool, default=False)
-    parser.add_argument("--use_low_mem_gpu", action="store_true", dest="low_mem_gpu", help="Use low memory GPU")
     
     # Tagging Generation Configs
     parser.add_argument("--max_tokens", type=int, default=1024)
@@ -150,28 +152,66 @@ def process_batch_with_api(batch, mission):
     return batch
 
 # Process a batch of data
-def process_batch(batch, llm, params, mission):
+def process_batch(batch, llm, params, mission, tokenizer=None):
     prompts = []
     for i, item in enumerate(batch):
-        conv = get_conversation_template(MODEL_NAME)
-        conv.append_message(conv.roles[0], template_generator(item['instruction'], mission))
-        conv.append_message(conv.roles[1], None)
-        template = conv.get_prompt()
-        template += "{"  # Prefilling for better generation
+        if mission == "safety":
+            chat = [
+                {"role": "user", "content": item['instruction']},
+                {"role": "assistant", "content": item['response']},
+            ]
+            template = tokenizer.apply_chat_template(chat, tokenize=False)
+        else:
+            conv = get_conversation_template(MODEL_NAME)
+            conv.append_message(conv.roles[0], template_generator(item['instruction'], mission))
+            conv.append_message(conv.roles[1], None)
+            template = conv.get_prompt()
+            template += "{"  # Prefilling for better generation
         prompts.append(template)
+
     outputs = llm.generate(prompts, params)
 
     for i, item in enumerate(batch):
-        model_response = "{\n" + outputs[i].outputs[0].text.strip()
-        # Remove additional information at the end of the response
-        model_response = model_response[:model_response.rfind("}")+1]
+        if mission == "safety":
+            model_response = outputs[i].outputs[0].text.strip()
+            item['llama_guard_2'] = model_response
+        else:
+            model_response = "{\n" + outputs[i].outputs[0].text.strip()
+            # Remove additional information at the end of the response
+            model_response = model_response[:model_response.rfind("}")+1]
 
-        item = process_engine_responses(model_response, item, mission)
+            item = process_engine_responses(model_response, item, mission)
     
     return batch
 
+def process_batch_reward_model(batch, rm_pipe, rm_pipe_kwargs):
+    prompts = []
+    for i, item in enumerate(batch):
+        input = item['instruction']
+        output = item['response']
+        chat = [
+            {"role": "user", "content": f"{input}"},
+            {"role": "assistant", "content": f"{output}"},
+        ]
+        template = rm_tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=False).replace(rm_tokenizer.bos_token, "")
+        prompts.append(template)
+    
+    outputs = rm_pipe(prompts, **rm_pipe_kwargs)
+    scores = [output[0]["score"] for output in outputs]
+
+    for i, item in enumerate(batch):
+        try:
+            item['instruct_reward'] = scores[i]
+            item['reward_model'] = args.reward_model_path
+        except Exception as e:
+            print(f"Failed to process item: {item} with error: {str(e)}")
+
+            item['instruct_reward'] = None
+            item['reward_model'] = args.reward_model_path
+    return batch
+
 # Generate outputs, update dataset in batches, and overwrite checkpoint
-def generate_and_update(dataset, mission, llm, params, api, batch_size, checkpoint_file, checkpoint_every = 20):
+def generate_and_update(dataset, mission, llm, params, api, rm_pipe, rm_pipe_kwargs, batch_size, checkpoint_file, checkpoint_every = 20):
     if os.path.exists(checkpoint_file):
         last_checkpoint_idx = len(load_dataset_from_file(checkpoint_file))
         print(f"[unitag.py] Checkpoint file found. Resuming from last checkpoint with index {last_checkpoint_idx}.")
@@ -190,6 +230,11 @@ def generate_and_update(dataset, mission, llm, params, api, batch_size, checkpoi
 
         if api:
             batch = process_batch_with_api(batch, mission)
+        elif mission == "reward":
+            batch = process_batch_reward_model(batch, rm_pipe, rm_pipe_kwargs)
+        elif mission == "safety":
+            tokenizer = AutoTokenizer.from_pretrained(args.guard_model_path)
+            batch = process_batch(batch, llm, params, mission, tokenizer)
         else:
             batch = process_batch(batch, llm, params, mission)
 
@@ -204,6 +249,7 @@ def generate_and_update(dataset, mission, llm, params, api, batch_size, checkpoi
 
 if __name__ == "__main__":
     input_file = args.input_file
+    # Mission Settings
     if mission == "difficulty":
         output_file = f"{input_file[:input_file.rfind('.')]}_difficulty.jsonl"
         checkpoint_file = f"{input_file[:input_file.rfind('.')]}_difficulty_checkpoint.json"
@@ -213,14 +259,20 @@ if __name__ == "__main__":
     elif mission == "classification":
         output_file = f"{input_file[:input_file.rfind('.')]}_category.jsonl"
         checkpoint_file = f"{input_file[:input_file.rfind('.')]}_category_checkpoint.json"
+    elif mission == "safety":
+        output_file = f"{input_file[:input_file.rfind('.')]}_safety.jsonl"
+        checkpoint_file = f"{input_file[:input_file.rfind('.')]}_safety_checkpoint.json"
+    elif mission == "reward":
+        rm_tokenizer = AutoTokenizer.from_pretrained(args.reward_model_path)
+        output_file = f"{input_file[:input_file.rfind('.')]}_reward.jsonl"
+        checkpoint_file = f"{input_file[:input_file.rfind('.')]}_reward_checkpoint.json"
     else:
         raise ValueError("Invalid mission. Available missions: difficulty, quality, classification")
     # Change jsonl to json if args.save_as is json
     if args.save_as == "json":
         output_file = f"{output_file[:output_file.rfind('.')]}.json"
 
-
-
+    # Load dataset
     if not args.debug:
         dataset = load_dataset_from_file(input_file)
     else:
@@ -230,34 +282,56 @@ if __name__ == "__main__":
         # checkpoint_file = f"{output_file[:output_file.rfind('.')]}_debug_checkpoint.json"
 
     if args.api:
+        if args.tag_mission not in ["difficulty", "quality", "classification"]:
+            raise ValueError("Safety and reward mission is not supported with API.")
+
         print("[unitag.py] Start together API engine...")
         llm = None
         params = None
-        if args.batch_size > 100:
-            raise ValueError("Batch size should be less than 100 for online API.")
+        rm_pipe = None
+        rm_pipe_kwargs = None
     else:
-        print("[unitag.py] Start Local vllm engine...")
-        os.environ["CUDA_VISIBLE_DEVICES"] = args.device
+        if args.tag_mission != "reward":
+            print("[unitag.py] Start Local vllm engine...")
+            os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 
-        llm = LLM(model=MODEL_NAME if not args.low_mem_gpu else args.gptq_model,
-                    dtype=args.dtype,
-                    quantization=args.quantization,
-                    kv_cache_dtype=args.kv_cache_dtype,
-                    max_model_len=args.max_model_len,
-                    tensor_parallel_size=args.tensor_parallel_size,
-                    gpu_memory_utilization=args.gpu_memory_utilization,
-                    trust_remote_code=True,
-                    enable_prefix_caching=True,)
-        
-        params = SamplingParams(
-                    temperature=args.temperature,
-                    max_tokens=args.max_tokens,
-                    repetition_penalty=args.repetition_penalty,
-                    stop=["}"],
-                    include_stop_str_in_output=True,
-                    )
+            llm = LLM(model=MODEL_NAME if not args.tag_mission == "safety" else args.guard_model_path,
+                        dtype=args.dtype,
+                        quantization=args.quantization,
+                        kv_cache_dtype=args.kv_cache_dtype,
+                        max_model_len=args.max_model_len,
+                        tensor_parallel_size=args.tensor_parallel_size,
+                        gpu_memory_utilization=args.gpu_memory_utilization,
+                        trust_remote_code=True,
+                        enable_prefix_caching=True,)
+            
+            params = SamplingParams(
+                        temperature=args.temperature,
+                        max_tokens=args.max_tokens,
+                        repetition_penalty=args.repetition_penalty,
+                        stop=["}"],
+                        include_stop_str_in_output=True,
+                        )
+            rm_pipe = None
+            rm_pipe_kwargs = None
+        else:
+            # Currently vllm do not support reward model inference, use transformer pipeline instead
+            rm_pipe = pipeline(
+                "sentiment-analysis",
+                model=args.reward_model_path,
+                device=int(args.device),
+                tokenizer=rm_tokenizer,
+                model_kwargs={"torch_dtype": torch.float16}
+            )
+            rm_pipe_kwargs = {
+                "return_all_scores": True,
+                "function_to_apply": "none",
+                "batch_size": batch_size,
+            }
+            llm = None
+            params = None
 
-    updated_dataset = generate_and_update(dataset, mission, llm, params, args.api, batch_size, checkpoint_file, checkpoint_every)
+    updated_dataset = generate_and_update(dataset, mission, llm, params, args.api, rm_pipe, rm_pipe_kwargs, batch_size, checkpoint_file, checkpoint_every)
     
     if args.save_as == "json":
         save_dataset(updated_dataset, output_file, convert_to_jsonl=False)
