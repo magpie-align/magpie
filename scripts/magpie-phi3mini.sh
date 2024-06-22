@@ -5,8 +5,8 @@ ins_temp=${4:-1}
 res_topp=${5:-1}
 res_temp=${6:-0}
 res_rep=1
-device="0,1"
-tensor_parallel=2
+device="0"
+tensor_parallel=1
 gpu_memory_utilization=0.95
 n=200
 batch_size=200
@@ -63,5 +63,6 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_res.py \
     --gpu_memory_utilization $gpu_memory_utilization \
     --input_file $job_path/Magpie_${model_path##*/}_${total_prompts}_${timestamp}_ins.json \
     --offline \
+    --use_tokenizer_template \
 
 echo "[magpie.sh] Finish Generating Responses!"

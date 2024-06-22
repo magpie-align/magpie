@@ -7,6 +7,7 @@ import requests
 import concurrent.futures
 from time import sleep
 from tqdm import tqdm
+from transformers import AutoTokenizer
 from utils import load_dataset_from_file, save_dataset, make_api_request_with_retry, get_conversation_template
 from vllm import LLM, SamplingParams
 
@@ -36,6 +37,8 @@ def get_args():
     parser.add_argument("--temperature", type=float, default=0)
     parser.add_argument("--top_p", type=float, default=1.0)
     parser.add_argument("--repetition_penalty", type=float, default=1.0)
+    parser.add_argument("--tokenizer_template", type=bool, default=False, help="Use tokenizer template for generating the response.")
+    parser.add_argument("--use_tokenizer_template", action="store_true", dest="tokenizer_template")
 
     return parser.parse_args()
 
@@ -119,14 +122,18 @@ def process_batch_with_api(batch):
     return batch
 
 # Process a batch of data using local vllm engine
-def process_batch(batch, llm, params):
+def process_batch(batch, llm, params, tokenizer=None):
     user_instructions = [item['instruction'] for item in batch]
     prompts = []
     for instruction in user_instructions:
-        conv = get_conversation_template(MODEL_NAME)
-        conv.append_message(conv.roles[0], instruction)
-        conv.append_message(conv.roles[1], None)
-        template = conv.get_prompt()
+        if not args.tokenizer_template:
+            conv = get_conversation_template(MODEL_NAME)
+            conv.append_message(conv.roles[0], instruction)
+            conv.append_message(conv.roles[1], None)
+            template = conv.get_prompt()
+        else:
+            chat = [{"role": "user", "content": instruction}]
+            template = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
         prompts.append(template)
     outputs = llm.generate(prompts, params)
     for i, item in enumerate(batch):
@@ -143,7 +150,7 @@ def process_batch(batch, llm, params):
     return batch
 
 # Generate outputs, update dataset in batches, and overwrite checkpoint
-def generate_and_update(dataset, llm=None, params=None, api=False):
+def generate_and_update(dataset, llm=None, params=None, api=False, tokenizer=None):
 
     # Intialize the dataset with the checkpoint file (if it exists)
     if os.path.exists(CHECKPOINT_FILE):
@@ -167,7 +174,7 @@ def generate_and_update(dataset, llm=None, params=None, api=False):
         if api:
             batch = process_batch_with_api(batch)
         else:
-            batch = process_batch(batch, llm, params)
+            batch = process_batch(batch, llm, params, tokenizer)
         
         dataset[start_idx:end_idx] = batch
         # Overwrite the same checkpoint file after serveral batches
@@ -205,7 +212,7 @@ def main():
             stop_token_ids=stop_token_ids,
             )
 
-    updated_dataset = generate_and_update(dataset, llm, params, api=args.api)
+    updated_dataset = generate_and_update(dataset, llm, params, api=args.api, tokenizer=AutoTokenizer.from_pretrained(MODEL_NAME))
 
     # Save final dataset
     save_dataset(updated_dataset, SAVED_FILE)
