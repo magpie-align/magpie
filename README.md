@@ -16,12 +16,12 @@ You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/da
 
 Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to [```configs/model_configs.json```](configs/model_configs.json) with more model support.
 
-|Model Family | Magpie | Magpie Script |
-|-------------|:------:|:-------|
-| Llama 3     | ✅ | [8B](scripts/magpie.sh),[70B](scripts/magpie-llama3-70b.sh)
-| Qwen2       | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh)
-| Phi 3       | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh)
-| Llama 2     | ⭕️ | [7B](scripts/magpie-llama2-7b.sh)
+|Model Family | Magpie | Magpie Script | Dataset |
+|-------------|:------:|:-------|:-------|
+| Llama 3     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f)
+| Qwen2       | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | Coming Soon!
+| Phi 3       | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | Coming Soon!
+| Llama 2     | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
 | Gemma       | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
 | Mistral     | ⭕️ | [7B](scripts/magpie-mistral7b.sh)
 | Yi          | ⭕️ | [34B](scripts/magpie-yi34b.sh)

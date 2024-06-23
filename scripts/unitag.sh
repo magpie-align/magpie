@@ -121,7 +121,7 @@ fi
 
 if [ $tag_mission == "reward" ] || [ $tag_mission == "all" ]; then
     echo "[magpie.sh] Start Generating Reward Tags..."
-    CUDA_VISIBLE_DEVICES=$device python ../exp/unitag.py \
+    python ../exp/unitag.py \
         --device $device \
         --reward_model_path $reward_model_path \
         --input_file $input_file \
