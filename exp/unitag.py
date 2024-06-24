@@ -53,7 +53,7 @@ args = get_args()
 print(f"[unitag.py] Unified Tagging Manager. Arguments: {args}") # For logging
 
 MODEL_NAME = args.model_path
-checkpoint_every = args.checkpoint_every
+checkpoint_every = args.checkpoint_every if args.tag_mission != "reward" else args.checkpoint_every*100
 batch_size = args.batch_size
 mission = args.tag_mission
 
@@ -184,7 +184,7 @@ def process_batch(batch, llm, params, mission, tokenizer=None):
     
     return batch
 
-def process_batch_reward_model(batch, rm_pipe, rm_pipe_kwargs):
+def process_batch_with_reward_model(batch, rm_pipe, rm_pipe_kwargs):
     prompts = []
     for i, item in enumerate(batch):
         input = item['instruction']
@@ -231,7 +231,7 @@ def generate_and_update(dataset, mission, llm, params, api, rm_pipe, rm_pipe_kwa
         if api:
             batch = process_batch_with_api(batch, mission)
         elif mission == "reward":
-            batch = process_batch_reward_model(batch, rm_pipe, rm_pipe_kwargs)
+            batch = process_batch_with_reward_model(batch, rm_pipe, rm_pipe_kwargs)
         elif mission == "safety":
             tokenizer = AutoTokenizer.from_pretrained(args.guard_model_path)
             batch = process_batch(batch, llm, params, mission, tokenizer)
@@ -283,7 +283,7 @@ if __name__ == "__main__":
 
     if args.api:
         if args.tag_mission not in ["difficulty", "quality", "classification"]:
-            raise ValueError("Safety and reward mission is not supported with API.")
+            raise ValueError("Safety and reward mission is not supported by API.")
 
         print("[unitag.py] Start together API engine...")
         llm = None

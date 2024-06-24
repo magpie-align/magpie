@@ -262,5 +262,26 @@
       "assistant"
     ],
     "extract_input": "<|startoftext|><|im_start|>user\n"
+  },
+  "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct": {
+    "model_name": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+    "stop_tokens": [
+      "<｜begin▁of▁sentence｜>",
+      "<｜end▁of▁sentence｜>",
+      "<|EOT|>",
+      "<｜User｜>",
+      "<｜Assistant｜>"
+    ],
+    "stop_token_ids": [
+      100000,
+      100001,
+      100008,
+      100006,
+      100007
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "extract_input": "<｜begin▁of▁sentence｜>User: "
   }
 }
