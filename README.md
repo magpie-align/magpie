@@ -14,17 +14,17 @@ You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/da
 
 ## Magpie Supports
 
-Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to [```configs/model_configs.json```](configs/model_configs.json) with more model support.
+Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel free to submit a pull request to [`configs/model_configs.json`](configs/model_configs.json) with more model support.
 
 |Model Family | Magpie | Magpie Script | Dataset |
 |-------------|:------:|:-------|:-------|
-| Llama 3     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f)
-| Qwen2       | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | Coming Soon!
-| Phi 3       | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | Coming Soon!
-| Llama 2     | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
-| Gemma       | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
-| Mistral     | ⭕️ | [7B](scripts/magpie-mistral7b.sh)
-| Yi          | ⭕️ | [34B](scripts/magpie-yi34b.sh)
+| [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f)
+| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | Coming Soon!
+| [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | Coming Soon!
+| [Llama 2](https://huggingface.co/collections/meta-llama/llama-2-family-661da1f90a9d678b6f55773b)   | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
+| [Gemma](https://huggingface.co/collections/google/gemma-release-65d5efbccdbb8c4202ec078b)    | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
+| [Mistral](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)   | ⭕️ | [7B](scripts/magpie-mistral7b.sh)
+| [Yi](https://huggingface.co/collections/01-ai/yi-15-2024-05-663f3ecab5f815a3eaca7ca8)    | ⭕️ | [34B](scripts/magpie-yi34b.sh)
 
 - ✅: Works so great!
 - ⭕️: Partially work. We can get something interesting, but may apply a powerful filter and/or a logits processor.
@@ -64,7 +64,7 @@ then enter your Huggingface private key beginning with "hf_".
 
 **Play with Jupyter Notebook**
 
-The toy example can be found in [```demo.ipynb```](demo.ipynb). Have fun! 
+The toy example can be found in [`demo.ipynb`](demo.ipynb). Have fun! 
 
 <a target="_blank" href="https://colab.research.google.com/github/magpie-align/magpie/blob/main/demo.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -72,18 +72,37 @@ The toy example can be found in [```demo.ipynb```](demo.ipynb). Have fun!
 
 ## Batched Data Generation
 
-To run batched generation, you can simply run:
+To run batched generation using Llama-3-8B-Instruct, you can simply run:
 ```
 cd scripts
 bash magpie.sh
 ```
-The script will generate both instructions and responses in ```data``` folder. The script has been tested on an RTX 4090 24G GPU. If you are using GPUs with less memory, consider implementing [quantization](https://docs.vllm.ai/en/latest/quantization/fp8.html).
+The script will generate both instructions and responses in the data folder. It has been tested on an RTX 4090 24G GPU. If you are using GPUs with less memory, consider implementing [quantization](https://docs.vllm.ai/en/latest/quantization/fp8.html).
 
-## Dataset Tagging
-Available soon!
+We also provide scripts for other models in the [`scripts`](scripts) folder. You can use [this](#magpie-supports) navigation to find specific Magpie scripts. Note that for model sizes greater than 8B, you may need 4*A100 GPUs to run the scripts.
 
-## Dataset Sanitization
-Available soon!
+## Dataset Tagging and Removing Repetition
+### Tagging
+To tag the generated instruction-response pairs in the previous step, e.g., `***_ins_res.json`, you can run:
+```
+cd scripts
+bash unitag.sh ***_ins_res.json all
+```
+This script will automatically generate quality, difficulty, task category, safety, and reward for the generated dataset. You can also generate one tag at a time. For example, if you just want to generate the safety label using device 0, you can run:
+```
+cd scripts
+bash unitag.sh ***_ins_res.json safety 0
+```
+### Data Concatenation and Convert for Fine-tuning
+You may generate datasets with different generation configurations. We provide a Jupyter notebook [here](data/data_concatenation.ipynb) for concatenating all datasets and converting them to ShareGPT format, which is fully supported by [Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) for fine-tuning.
+
+### Removing Repetition
+Once you have a full dataset converted to ShareGPT format, you can calculate the minimum neighbor distance of each instruction and remove repetitions. To do so, run:
+```
+cd exp
+python gen_dis.py --input_file ***_sharegpt.jsonl
+```
+where `***_sharegpt.jsonl` is the dataset path obtained in the previous step. The Python script will take care of building the FAISS index and calculating the minimum distance. 
 
 ## Citation
 
