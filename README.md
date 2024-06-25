@@ -19,8 +19,8 @@ Currently, Magpie has been tested on the **Llama-3** and **Qwen2** series. Feel 
 |Model Family | Magpie | Magpie Script | Dataset |
 |-------------|:------:|:-------|:-------|
 | [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f)
-| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | Coming Soon!
-| [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | Coming Soon!
+| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | [72B](https://huggingface.co/collections/Magpie-Align/magpie-qwen2-6679fb5deb164e55849b4907)
+| [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | [medium](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64)
 | [Llama 2](https://huggingface.co/collections/meta-llama/llama-2-family-661da1f90a9d678b6f55773b)   | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
 | [Gemma](https://huggingface.co/collections/google/gemma-release-65d5efbccdbb8c4202ec078b)    | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
 | [Mistral](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)   | ⭕️ | [7B](scripts/magpie-mistral7b.sh)

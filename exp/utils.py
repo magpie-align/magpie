@@ -1,5 +1,6 @@
 import json
 import requests
+import uuid
 from time import sleep
 from fastchat.model import get_conversation_template
 
@@ -79,3 +80,9 @@ def apply_template(model_name):
         raise ValueError(f"ERROR: model_name {model_name} not supported for applying templates!")
 
     return conv
+
+
+# UUID
+def generate_uuid(name):
+    namespace = uuid.NAMESPACE_DNS
+    return str(uuid.uuid5(namespace, name))
