@@ -9,8 +9,6 @@ peft
 datasets
 accelerate
 bitsandbytes
-faiss-gpu
-ml_collections
 autoawq
 ray
 
@@ -27,3 +25,8 @@ matplotlib
 wandb
 ipywidgets
 ipykernel
+
+# Utils
+lingua-language-detector
+faiss-gpu
+ml_collections

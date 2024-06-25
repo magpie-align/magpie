@@ -11,6 +11,7 @@ from utils import load_jsonl_to_list, load_dataset_from_file, save_dataset
 from utils import make_api_request_with_retry
 from str_utils import input_difficulty_rating, input_classification, input_quality_rating
 from utils import get_conversation_template
+from lingua import Language, LanguageDetectorBuilder
 
 ################
 # Configurations
@@ -18,7 +19,7 @@ from utils import get_conversation_template
 def get_args():
     # Experiment Settings
     parser = argparse.ArgumentParser(description="Unified Tagging Manager.")
-    parser.add_argument("--tag_mission", type=str, default="quality", help="The tagging mission.", choices=["difficulty", "quality", "classification", "safety", "reward"])
+    parser.add_argument("--tag_mission", type=str, default="quality", help="The tagging mission.", choices=["difficulty", "quality", "classification", "safety", "reward", "language"])
     parser.add_argument("--model_path", type=str, default="meta-llama/Meta-Llama-3-8B-Instruct", help="Tag Model.")
     parser.add_argument("--guard_model_path", type=str, default="meta-llama/Meta-Llama-Guard-2-8B", help="Guard Model.")
     parser.add_argument("--reward_model_path", type=str, default="sfairXC/FsfairX-LLaMA3-RM-v0.1", help="Reward Model.")
@@ -266,8 +267,11 @@ if __name__ == "__main__":
         rm_tokenizer = AutoTokenizer.from_pretrained(args.reward_model_path)
         output_file = f"{input_file[:input_file.rfind('.')]}_reward.jsonl"
         checkpoint_file = f"{input_file[:input_file.rfind('.')]}_reward_checkpoint.json"
+    elif mission == "language":
+        output_file = f"{input_file[:input_file.rfind('.')]}_language.jsonl"
+        checkpoint_file = f"{input_file[:input_file.rfind('.')]}_language_checkpoint.json"
     else:
-        raise ValueError("Invalid mission. Available missions: difficulty, quality, classification")
+        raise ValueError("Invalid mission. Available missions: difficulty, quality, classification, safety, reward, language")
     # Change jsonl to json if args.save_as is json
     if args.save_as == "json":
         output_file = f"{output_file[:output_file.rfind('.')]}.json"
@@ -281,58 +285,74 @@ if __name__ == "__main__":
         # output_file = f"{output_file[:output_file.rfind('.')]}_debug.jsonl"
         # checkpoint_file = f"{output_file[:output_file.rfind('.')]}_debug_checkpoint.json"
 
-    if args.api:
-        if args.tag_mission not in ["difficulty", "quality", "classification"]:
-            raise ValueError("Safety and reward mission is not supported by API.")
+    if mission != "language":
+        if args.api:
+            if args.tag_mission not in ["difficulty", "quality", "classification"]:
+                raise ValueError("Safety and reward mission is not supported by API.")
 
-        print("[unitag.py] Start together API engine...")
-        llm = None
-        params = None
-        rm_pipe = None
-        rm_pipe_kwargs = None
-    else:
-        if args.tag_mission != "reward":
-            print("[unitag.py] Start Local vllm engine...")
-            os.environ["CUDA_VISIBLE_DEVICES"] = args.device
-
-            llm = LLM(model=MODEL_NAME if not args.tag_mission == "safety" else args.guard_model_path,
-                        dtype=args.dtype,
-                        quantization=args.quantization,
-                        kv_cache_dtype=args.kv_cache_dtype,
-                        max_model_len=args.max_model_len,
-                        tensor_parallel_size=args.tensor_parallel_size,
-                        gpu_memory_utilization=args.gpu_memory_utilization,
-                        trust_remote_code=True,
-                        enable_prefix_caching=True,)
-            
-            params = SamplingParams(
-                        temperature=args.temperature,
-                        max_tokens=args.max_tokens,
-                        repetition_penalty=args.repetition_penalty,
-                        stop=["}"],
-                        include_stop_str_in_output=True,
-                        )
+            print("[unitag.py] Start together API engine...")
+            llm = None
+            params = None
             rm_pipe = None
             rm_pipe_kwargs = None
         else:
-            # Currently vllm do not support reward model inference, use transformer pipeline instead
-            rm_pipe = pipeline(
-                "sentiment-analysis",
-                model=args.reward_model_path,
-                device=int(args.device),
-                tokenizer=rm_tokenizer,
-                model_kwargs={"torch_dtype": torch.float16}
-            )
-            rm_pipe_kwargs = {
-                "return_all_scores": True,
-                "function_to_apply": "none",
-                "batch_size": batch_size,
-            }
-            llm = None
-            params = None
+            if args.tag_mission == "reward":
+                # Currently vllm do not support reward model inference, use transformer pipeline instead
+                rm_pipe = pipeline(
+                    "sentiment-analysis",
+                    model=args.reward_model_path,
+                    device=int(args.device),
+                    tokenizer=rm_tokenizer,
+                    model_kwargs={"torch_dtype": torch.float16}
+                )
+                rm_pipe_kwargs = {
+                    "return_all_scores": True,
+                    "function_to_apply": "none",
+                    "batch_size": batch_size,
+                }
+                llm = None
+                params = None
+            else:
+                print("[unitag.py] Start Local vllm engine...")
+                os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 
-    updated_dataset = generate_and_update(dataset, mission, llm, params, args.api, rm_pipe, rm_pipe_kwargs, batch_size, checkpoint_file, checkpoint_every)
+                llm = LLM(model=MODEL_NAME if not args.tag_mission == "safety" else args.guard_model_path,
+                            dtype=args.dtype,
+                            quantization=args.quantization,
+                            kv_cache_dtype=args.kv_cache_dtype,
+                            max_model_len=args.max_model_len,
+                            tensor_parallel_size=args.tensor_parallel_size,
+                            gpu_memory_utilization=args.gpu_memory_utilization,
+                            trust_remote_code=True,
+                            enable_prefix_caching=True,)
+                
+                params = SamplingParams(
+                            temperature=args.temperature,
+                            max_tokens=args.max_tokens,
+                            repetition_penalty=args.repetition_penalty,
+                            stop=["}"],
+                            include_stop_str_in_output=True,
+                            )
+                rm_pipe = None
+                rm_pipe_kwargs = None
+
+        updated_dataset = generate_and_update(dataset, mission, llm, params, args.api, rm_pipe, rm_pipe_kwargs, batch_size, checkpoint_file, checkpoint_every)
     
+    else:
+        # Language Detection using lingua
+        print("[unitag.py] Start language detection engine...")
+        detector = LanguageDetectorBuilder.from_all_languages().build()
+        for item in tqdm(dataset):
+            if item['instruction'] != "":
+                try:
+                    item['language'] = detector.detect_language_of(item['instruction']).iso_code_639_1.name
+                except Exception as e:
+                    print(f"Failed to process item with error: {str(e)}")
+                    item['language'] = None
+            else:
+                item['language'] = None
+        updated_dataset = dataset
+
     if args.save_as == "json":
         save_dataset(updated_dataset, output_file, convert_to_jsonl=False)
     else:

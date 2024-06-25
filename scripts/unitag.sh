@@ -140,3 +140,24 @@ if [ $tag_mission == "reward" ] || [ $tag_mission == "all" ]; then
     input_file=$reward_tag_file
     echo "[magpie.sh] Reward Tagged File: $input_file"
 fi
+
+if [ $tag_mission == "language" ] || [ $tag_mission == "all" ]; then
+    echo "[magpie.sh] Start Generating Language Tags..."
+    CUDA_VISIBLE_DEVICES=$device python ../exp/unitag.py \
+        --device $device \
+        --input_file $input_file \
+        --tag_mission "language" \
+
+    echo "[magpie.sh] Finish Generating Language Tags!"
+
+    # Change input file name to quality tagged file
+    input_file_name=$(basename $input_file)
+    input_file_dir=$(dirname $input_file)
+    input_file_name_no_ext="${input_file_name%.*}"
+    input_file_ext="${input_file_name##*.}"
+    language_tag_file="${input_file_dir}/${input_file_name_no_ext}_language.${input_file_ext}"
+    input_file=$language_tag_file
+    echo "[magpie.sh] Language Tagged File: $input_file"
+fi
+
+echo "[magpie.sh] Finish Tagging Mission: $tag_mission"
