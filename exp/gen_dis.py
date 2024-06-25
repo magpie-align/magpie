@@ -24,6 +24,8 @@ def get_args():
     # System Settings
     parser.add_argument("--device", type=int, default=0)
     parser.add_argument("--save_faiss_index", type=bool, default=True, help="Save the Faiss index.")
+    
+    return parser.parse_args()
 
 args = get_args()
 
@@ -42,7 +44,7 @@ inputs = dataset["train"]["instruction"]
 print(f"The second instruction in the dataset is: {inputs[1]}")
 
 model = SentenceTransformer(sentence_model)
-model.to(device=f'cuda:{args.device}', dtype=torch.float16)
+model.to(device=f'cuda:{args.device}', dtype=torch.float32)
 print(f"The model is loaded on device: {model.device}")
 
 # Encode the sentences in the dataset into vectors
@@ -87,56 +89,56 @@ print(f"Number of batches: {n_batches}")
 # load the dataset in jsonl format
 unfilled_dataset = load_dataset_from_file(dataset_path)
 
-for batch_idx in tqdm(range(n_batches)):
-    start_idx = batch_idx * search_batch_size
-    end_idx = min((batch_idx + 1) * search_batch_size, len(dataset["train"]))
+with open(output_file, 'a') as file:
+    for batch_idx in tqdm(range(n_batches)):
+        start_idx = batch_idx * search_batch_size
+        end_idx = min((batch_idx + 1) * search_batch_size, len(dataset["train"]))
 
-    batch_indices = list(range(start_idx, end_idx))
-    
-    # Obtain the embeddings for the current batch
-    batch_embeddings = embeddings[batch_indices]
-    
-    # Search for the most similar examples
-    search_results = dataset["train"].search_batch(queries=batch_embeddings, k=search_space_size, index_name="embeddings")
-    total_scores = search_results.total_scores
-    total_indices = search_results.total_indices
+        batch_indices = list(range(start_idx, end_idx))
+        
+        # Obtain the embeddings for the current batch
+        batch_embeddings = embeddings[batch_indices]
+        
+        # Search for the most similar examples
+        search_results = dataset["train"].search_batch(queries=batch_embeddings, k=search_space_size, index_name="embeddings")
+        total_scores = search_results.total_scores
+        total_indices = search_results.total_indices
 
-    for i in range(len(total_indices)):
-        scores = total_scores[i]
-        indices = total_indices[i]
-        min_distance = float(scores[1]) # should exclude itself
-        dataset["train"][start_idx + i]["min_distance"] = min_distance
+        for i in range(len(total_indices)):
+            scores = total_scores[i]
+            indices = total_indices[i]
+            min_distance = float(scores[1]) # should exclude itself
+            dataset["train"][start_idx + i]["min_distance"] = min_distance
 
-        filtered_indices = [index for index, score in zip(indices, scores) if score < distance_threshold]
-        # Should remove itself
-        filtered_indices = [index for index in filtered_indices if index != start_idx + i]
+            filtered_indices = [index for index, score in zip(indices, scores) if score < distance_threshold]
+            # Should remove itself
+            filtered_indices = [index for index in filtered_indices if index != start_idx + i]
 
-        if len(filtered_indices) == 0:
-            repeat_count = 0
-            min_similar_conversation_id = None
+            if len(filtered_indices) == 0:
+                repeat_count = 0
+                min_similar_conversation_id = None
 
-            dataset["train"][start_idx + i]["repeat_count"] = repeat_count
-            dataset["train"][start_idx + i]["min_similar_conversation_id"] = min_similar_conversation_id
-        else:
-            min_similar_conversation_idx = int(min(filtered_indices))
-            if min_similar_conversation_idx >= start_idx + i:
-                min_similar_conversation_id = dataset["train"][start_idx + i]["conversation_id"]
-            else: 
-                min_similar_conversation_id = dataset["train"][min_similar_conversation_idx]["conversation_id"]
-            
-            repeat_count = len(filtered_indices)
+                dataset["train"][start_idx + i]["repeat_count"] = repeat_count
+                dataset["train"][start_idx + i]["min_similar_conversation_id"] = min_similar_conversation_id
+            else:
+                min_similar_conversation_idx = int(min(filtered_indices))
+                if min_similar_conversation_idx >= start_idx + i:
+                    min_similar_conversation_id = dataset["train"][start_idx + i]["conversation_id"]
+                else: 
+                    min_similar_conversation_id = dataset["train"][min_similar_conversation_idx]["conversation_id"]
+                
+                repeat_count = len(filtered_indices)
 
-            dataset["train"][start_idx + i]["repeat_count"] = repeat_count
-            dataset["train"][start_idx + i]["min_similar_conversation_id"] = min_similar_conversation_id
+                dataset["train"][start_idx + i]["repeat_count"] = repeat_count
+                dataset["train"][start_idx + i]["min_similar_conversation_id"] = min_similar_conversation_id
 
-        # save the updated dataset
-        with open(output_file, 'a') as file:
+            # save the updated dataset
             line = unfilled_dataset[start_idx + i]
-            line["min_distance"] = min_distance
+            line["min_neighbor_distance"] = min_distance
             line["repeat_count"] = repeat_count
             line["min_similar_conversation_id"] = min_similar_conversation_id
             file.write(json.dumps(line) + '\n')
-        
-    print(f"Batch {batch_idx} is saved to the output file")
+            
+        print(f"Batch {batch_idx} is saved to the output file")
 
 print("Distance calculation is completed.")
