@@ -17,6 +17,7 @@
       "assistant"
     ],
     "pre_query_template": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n",
+    "mt_append_template": "<|start_header_id|>user<|end_header_id|>\n\n",
     "pre_query_template_with_system_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nA chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n",
     "pre_query_template_math": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are an AI assistant designed to provide helpful, step-by-step guidance on solving math problems. The user will ask you a wide range of complex mathematical questions.\nYour purpose is to assist users in understanding mathematical concepts, working through equations, and arriving at the correct solutions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n",
     "pre_query_template_code": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are an AI assistant designed to provide helpful, step-by-step guidance on coding problems. The user will ask you a wide range of coding questions.\nYour purpose is to assist users in understanding coding concepts, working through code, and arriving at the correct solutions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n",
@@ -40,6 +41,7 @@
       "assistant"
     ],
     "pre_query_template": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n",
+    "mt_append_template": "<|start_header_id|>user<|end_header_id|>\n\n",
     "pre_query_template_with_system_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nA chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n",
     "pre_query_template_math": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are an AI assistant designed to provide helpful, step-by-step guidance on solving math problems. The user will ask you a wide range of complex mathematical questions.\nYour purpose is to assist users in understanding mathematical concepts, working through equations, and arriving at the correct solutions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n",
     "pre_query_template_code": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are an AI assistant designed to provide helpful, step-by-step guidance on coding problems. The user will ask you a wide range of coding questions.\nYour purpose is to assist users in understanding coding concepts, working through code, and arriving at the correct solutions.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n",
