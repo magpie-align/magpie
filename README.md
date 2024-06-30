@@ -77,8 +77,7 @@ The toy example can be found in [`demo.ipynb`](demo.ipynb). Have fun!
 </a>
 
 ## Batched Data Generation
-
-To run batched generation using Llama-3-8B-Instruct, you can simply run:
+We use Llama-3-8B-Instruct as an example to demonstrate the batched data generation process. To run batched generation, you can simply run:
 ```
 cd scripts
 bash magpie.sh
@@ -87,28 +86,41 @@ The script will generate both instructions and responses in the data folder. It 
 
 We also provide scripts for other models in the [`scripts`](scripts) folder. You can use [this](#magpie-supports) navigation to find specific Magpie scripts. Note that for model sizes greater than 8B, you may need 4*A100 GPUs to run the scripts.
 
-## Dataset Tagging and Removing Repetition
-### Tagging
-To tag the generated instruction-response pairs in the previous step, e.g., `***_ins_res.json`, you can run:
+### Batched Multi-turn Data Generation \[Optional\]
+After generating instruction-response pairs, you can extend them to multi-turn conversations. To do so, simply run the following command:
+```
+bash magpie-multi-turn.sh ***_ins_res.json
+```
+where `***_ins_res.json` is the single-turn instruction-response pairs generated in the previous step.
+
+## Dataset Filtering
+### 1. Tagging
+To tag the generated instruction-response pairs, you can run:
 ```
 cd scripts
 bash unitag.sh ***_ins_res.json all
 ```
-This script will automatically generate quality, difficulty, task category, safety, and reward for the generated dataset. You can also generate one tag at a time. For example, if you just want to generate the safety label using device 0, you can run:
+This script will automatically generate quality, difficulty, task category, safety, reward, and language for the generated dataset. You can also generate one tag at a time. For example, if you just want to generate the safety label using device 0, you can run:
 ```
 cd scripts
 bash unitag.sh ***_ins_res.json safety 0
 ```
-### Data Concatenation and Convert for Fine-tuning
+### 2. Data Concatenation and Converting
 You may generate datasets with different generation configurations. We provide a Jupyter notebook [here](data/data_concatenation.ipynb) for concatenating all datasets and converting them to ShareGPT format, which is fully supported by [Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) for fine-tuning.
 
-### Removing Repetition
+### 3. Removing Repetition
 Once you have a full dataset converted to ShareGPT format, you can calculate the minimum neighbor distance of each instruction and remove repetitions. To do so, run:
 ```
 cd exp
 python gen_dis.py --input_file ***_sharegpt.jsonl
 ```
 where `***_sharegpt.jsonl` is the dataset path obtained in the previous step. The Python script will take care of building the FAISS index and calculating the minimum distance. 
+
+### 4. Design and Apply Your Filter
+We provide a Jupyter notebook [here](data/data_filter.ipynb) for simple filtering. You can adjust the filtering parameters to design and apply your own filter based on your needs.
+
+## Fine-tuning
+Please refer to the [fine-tune](fine-tune/) directory for instructions.
 
 ## Citation
 

@@ -5,7 +5,6 @@ model_path=${4:-"meta-llama/Meta-Llama-3-8B-Instruct"}
 guard_model_path="meta-llama/Meta-Llama-Guard-2-8B"
 reward_model_path="sfairXC/FsfairX-LLaMA3-RM-v0.1"
 tensor_parallel=1
-res_rep=1
 gpu_memory_utilization=0.95
 batch_size=1000
 
