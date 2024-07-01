@@ -90,7 +90,7 @@ llm = LLM(model=args.model_path,
         seed=args.seed if args.seed is not None else args.timestamp)
 
 # Obtain config from configs/model_configs.json
-with open("../configs/model_configs.json", "r") as f:
+with open("../configs/model_configs.json", "r", encoding="utf-8") as f:
     model_configs = json.load(f)
     model_config = model_configs[args.model_path]
     if args.control_tasks:
