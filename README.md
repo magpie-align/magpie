@@ -12,6 +12,13 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 
 You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/davanstrien/magpie) to generate instruction-response pairs. Thanks a lot for the quick implementation from @davanstrien!
 
+## News
+- [2024/07/04] Magpie Qwen2 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) from Qwen2 72B and [3M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1) from Qwen2 7B.
+- [2024/07/03] 🏆 Our open aligned model, [Llama-3-8B-Magpie-Align-v0.1](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.1) is out! It is 🏆 the **best <30B Model** in [AI2 WildBench Leaderboard](https://huggingface.co/spaces/allenai/WildBench)! Even better than the official [Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) model!
+- [2024/06/24] Magpie Phi 3 dataset is out! [1M](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64) from Phi 3 Medium.
+- [2024/06/12] Magpie Llama-3 dataset is out! [1M](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f) from Llama-3 70B and [3M](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0) from Llama-3 8B.
+- [2024/06/12] [Magpie technical report]((https://arxiv.org/abs/2406.08464)) is out! Let's make high-quality alignment data open for all!
+
 ## Magpie Supports
 
 Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, and **Phi 3** series. Feel free to submit a pull request to [`configs/model_configs.json`](configs/model_configs.json) with more model support.
@@ -19,9 +26,9 @@ Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, and **Phi 3** s
 |Model Family | Magpie | Magpie Script | Dataset |
 |-------------|:------:|:-------|:-------|
 | [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f)
-| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | [72B](https://huggingface.co/collections/Magpie-Align/magpie-qwen2-6679fb5deb164e55849b4907)
+| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | [7B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1),[72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1)
 | [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | [medium](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64)
-| [Gemma-2](https://huggingface.co/collections/google/gemma-2-release-667d6600fd5220e7b967f315)    | ⭕️ | [9B](magpie-gemma2-9b.sh) [27B](/home/nsl/zhangchen/magpie/scripts/magpie-gemma2-27b.sh)
+| [Gemma-2](https://huggingface.co/collections/google/gemma-2-release-667d6600fd5220e7b967f315)    | ⭕️ | [9B](magpie-gemma2-9b.sh),[27B](/home/nsl/zhangchen/magpie/scripts/magpie-gemma2-27b.sh)
 | [Gemma-1.1](https://huggingface.co/collections/google/gemma-release-65d5efbccdbb8c4202ec078b)    | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
 | [Llama 2](https://huggingface.co/collections/meta-llama/llama-2-family-661da1f90a9d678b6f55773b)   | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
 | [Mistral](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)   | ⭕️ | [7B](scripts/magpie-mistral7b.sh)
@@ -34,14 +41,10 @@ Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, and **Phi 3** s
 
 We hope Magpie can contribute to the democratization of AI. With your help, we can create more data and enhance the transparency of model alignment processes!
 
-### Dataset Generation Queue
-- Qwen/Qwen2-7B-Instruct (3M) - Generating
-- google/gemma-2-27b-it (1M) - Waiting for vllm support
-
-
 ## Abstract
-
+<details><summary>Click Here</summary>
 High-quality instruction data is critical for aligning large language models (LLMs). Although some models, such as Llama-3-Instruct, have open weights, their alignment data remain private, which hinders the democratization of AI. High human labor costs and a limited, predefined scope for prompting prevent existing open-source data creation methods from scaling effectively, potentially limiting the diversity and quality of public alignment datasets. Is it possible to synthesize high-quality instruction data at scale by extracting it directly from an aligned LLM? We present a self-synthesis method for generating large-scale alignment data named Magpie. Our key observation is that aligned LLMs like Llama-3-Instruct can generate a user query when we input only the left-side templates up to the position reserved for user messages, thanks to their auto-regressive nature. We use this method to prompt Llama-3-Instruct and generate 4 million instructions along with their corresponding responses. We perform a comprehensive analysis of the extracted data and select 300K high-quality instances. To compare Magpie data with other public instruction datasets, we fine-tune Llama-3-8B-Base with each dataset and evaluate the performance of the fine-tuned models. Our results indicate that in some tasks, models fine-tuned with Magpie perform comparably to the official Llama-3-8B-Instruct, despite the latter being enhanced with 10 million data points through supervised fine-tuning (SFT) and subsequent feedback learning. We also show that using Magpie solely for SFT can surpass the performance of previous public datasets utilized for both SFT and preference optimization, such as direct preference optimization with UltraFeedback. This advantage is evident on alignment benchmarks such as AlpacaEval, ArenaHard, and WildBench.
+</details><be>
 
 ## Overview
 
