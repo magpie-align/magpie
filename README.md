@@ -1,16 +1,16 @@
 <!-- # 🐦 Magpie -->
 
-![Magpie](figs/magpie_logo.png)
+[![Magpie](figs/magpie_logo.png)](https://magpie-align.github.io/)
 
 [![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Data License](https://img.shields.io/badge/Data%20License-CC%20By%20NC%204.0-red.svg)](https://huggingface.co/Magpie-Align) [![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/davanstrien/magpie)
 
-This is the official repository for "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)".
+This is the official repository for "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)". Magpie generates high-quality alignment data by prompting aligned LLMs with their pre-query templates. Unlike many existing synthetic data generation methods, Magpie doesn't rely on prompt engineering or seed questions for generating synthetic data. Instead, it uses the prompt template of an aligned LLM to generate both the user query and an LLM response.
 
 - 🤗 [**Huggingface (Models and Datasets)**](https://huggingface.co/Magpie-Align)
 - 🕸️ [**Website**](https://magpie-align.github.io/)
 - 📄 [**Technical Report**](https://arxiv.org/abs/2406.08464)
-
-You can try the no-code Magpie demo [🤗 here](https://huggingface.co/spaces/davanstrien/magpie) to generate instruction-response pairs. Thanks a lot for the quick implementation from @davanstrien!
+- 🤗 [**Magpie Demo**](https://huggingface.co/spaces/davanstrien/magpie) (Thanks a lot for the implementation from @davanstrien!)
+- 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## News
 - [2024/07/04] Magpie Qwen2 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) from Qwen2 72B and [3M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1) from Qwen2 7B.
