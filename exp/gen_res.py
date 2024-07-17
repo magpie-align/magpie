@@ -10,6 +10,7 @@ from tqdm import tqdm
 from transformers import AutoTokenizer
 from utils import load_dataset_from_file, save_dataset, make_api_request_with_retry, get_conversation_template
 from vllm import LLM, SamplingParams
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 ################
 # Configurations
@@ -22,12 +23,12 @@ def get_args():
     parser.add_argument("--input_file", type=str, default=None, help="Input dataset file name")
     parser.add_argument("--batch_size", type=int, default=128, help="Number of samples per batch")
     parser.add_argument("--checkpoint_every", type=int, default=20, help="Save checkpoint every n batches")
-    parser.add_argument("--api", type=bool, default=False, help="Use API to generate responses")
     parser.add_argument("--api_url", type=str, default="https://api.together.xyz/v1/chat/completions", help="API URL")
     parser.add_argument("--api_key", type=str, default=None, help="Together API Key")
-    parser.add_argument("--offline", action="store_false", dest="api", help="Use local vllm engine")
+    parser.add_argument("--offline", action="store_true", help="Use local engine")
 
     # Generation Parameters
+    parser.add_argument('--engine', default="vllm", type=str, choices=["vllm", "hf", "together"])
     parser.add_argument("--device", type=str, default="0")
     parser.add_argument("--dtype", type=str, default="bfloat16", choices=["float16", "bfloat16"])
     parser.add_argument("--tensor_parallel_size", type=int, default=1, help="Number of GPUs to use for tensor parallelism. Only used for Llama 70B models.")
@@ -64,7 +65,7 @@ with open("../configs/model_configs.json", "r") as f:
     stop_token_ids = model_config["stop_token_ids"]
 
 # API Setups
-if args.api:
+if args.engine == "together":
     # Change name for API (Together Naming Convention)
     if MODEL_NAME == "meta-llama/Meta-Llama-3-8B-Instruct":
         api_model_name = "meta-llama/Llama-3-8b-chat-hf"
@@ -135,9 +136,31 @@ def process_batch(batch, llm, params, tokenizer=None):
             chat = [{"role": "user", "content": instruction}]
             template = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
         prompts.append(template)
-    outputs = llm.generate(prompts, params)
+    if args.engine == "vllm":
+        outputs = llm.generate(prompts, params)
+    elif args.engine == "hf":
+        inputs = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True).to(torch.cuda.current_device())
+        gen_do_sample = False if args.temperature == 0 else True
+        outputs = llm.generate(**inputs,
+                tokenizer=tokenizer, 
+                do_sample=gen_do_sample, 
+                temperature=args.temperature if gen_do_sample else None, # To avoid temperature` (=0) has to be a strictly positive float
+                top_p=args.top_p,
+                repetition_penalty=args.repetition_penalty, 
+                max_length=args.max_tokens,
+                )
+        outputs = tokenizer.batch_decode(outputs[i][len(inputs[i]):] for i in range(len(outputs)))
+        # Setting stop tokens seems not working for Gemma, so we manually truncate the outputs
+        for i, completion in enumerate(outputs):
+            for stop_token in stop_tokens:
+                if stop_token in completion:
+                    outputs[i] = completion[:completion.index(stop_token)]
+
     for i, item in enumerate(batch):
-        item['response'] = outputs[i].outputs[0].text.strip()
+        if args.engine == "vllm":
+            item['response'] = outputs[i].outputs[0].text.strip()
+        elif args.engine == "hf":
+            item['response'] = outputs[i].strip()
         item['gen_response_configs'] = {
             "prompt": prompts[i],
             "temperature": args.temperature,
@@ -150,7 +173,13 @@ def process_batch(batch, llm, params, tokenizer=None):
     return batch
 
 # Generate outputs, update dataset in batches, and overwrite checkpoint
-def generate_and_update(dataset, llm=None, params=None, api=False, tokenizer=None):
+def generate_and_update(dataset, llm=None, params=None, tokenizer=None):
+    # Initialize tokenizer
+    if tokenizer is not None:
+        if tokenizer.pad_token_id is None:
+            tokenizer.pad_token = tokenizer.eos_token
+        if "gemma-2" in args.model_path.lower():
+            tokenizer.padding_side = "right"
 
     # Intialize the dataset with the checkpoint file (if it exists)
     if os.path.exists(CHECKPOINT_FILE):
@@ -171,7 +200,7 @@ def generate_and_update(dataset, llm=None, params=None, api=False, tokenizer=Non
         start_idx = i * BATCH_SIZE + last_checkpoint_idx
         end_idx = min((i + 1) * BATCH_SIZE + last_checkpoint_idx, len(dataset))
         batch = dataset[start_idx:end_idx]
-        if api:
+        if args.engine == "together":
             batch = process_batch_with_api(batch)
         else:
             batch = process_batch(batch, llm, params, tokenizer)
@@ -189,15 +218,15 @@ def main():
     # Load instructions from the input file
     dataset = load_dataset_from_file(INPUT_FILE_NAME)
     
-    if args.api:
+    if args.engine == "together":
         print("Start together API engine...")
         llm = None
         params = None
-    else:
+    elif args.engine == "vllm":
         # Set the device
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
         print("Start Local vllm engine...")
-        llm =  LLM(model=MODEL_NAME, 
+        llm = LLM(model=MODEL_NAME, 
             dtype=args.dtype,
             trust_remote_code=True,
             max_model_len = args.max_model_len, # limited by kv-cache 
@@ -211,8 +240,19 @@ def main():
             repetition_penalty=args.repetition_penalty,
             stop_token_ids=stop_token_ids,
             )
+    elif args.engine == "hf":
+        print("Start Hugging Face engine...")
+        params = None
+        # Load the model and tokenizer
+        llm = AutoModelForCausalLM.from_pretrained(
+            args.model_path,
+            device_map={'':torch.cuda.current_device()},
+            torch_dtype=torch.bfloat16 if args.dtype == "bfloat16" else torch.float16
+        )
+    else:
+        raise ValueError("Invalid engine type.")
 
-    updated_dataset = generate_and_update(dataset, llm, params, api=args.api, tokenizer=AutoTokenizer.from_pretrained(MODEL_NAME))
+    updated_dataset = generate_and_update(dataset, llm, params, tokenizer=AutoTokenizer.from_pretrained(MODEL_NAME))
 
     # Save final dataset
     save_dataset(updated_dataset, SAVED_FILE)

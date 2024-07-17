@@ -129,12 +129,12 @@ Please refer to the [fine-tune](fine-tune/) directory for instructions.
 
 If you find the model, data, or code useful, please cite our paper:
 ```
-@misc{xu2024magpie,
-    title={Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing}, 
-    author={Zhangchen Xu and Fengqing Jiang and Luyao Niu and Yuntian Deng and Radha Poovendran and Yejin Choi and Bill Yuchen Lin},
-    year={2024},
-    eprint={2406.08464},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
+@article{xu2024magpie,j
+  title={Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing},
+  author={Zhangchen Xu and Fengqing Jiang and Luyao Niu and Yuntian Deng and Radha Poovendran and Yejin Choi and Bill Yuchen Lin},
+  journal={ArXiv},
+  year={2024},
+  volume={abs/2406.08464},
+  url={https://api.semanticscholar.org/CorpusID:270391432}
 }
 ```

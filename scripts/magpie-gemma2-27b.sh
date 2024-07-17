@@ -5,11 +5,11 @@ ins_temp=${4:-1}
 res_topp=${5:-1}
 res_temp=${6:-0}
 res_rep=1
-device="0,1,2,3"
-tensor_parallel=4
+device="0"
+tensor_parallel=1
 gpu_memory_utilization=0.95
-n=200
-batch_size=200
+n=10
+batch_size=2
 
 # Get Current Time
 timestamp=$(date +%s)
@@ -48,6 +48,10 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_ins.py \
     --n $n \
     --job_name $job_name \
     --timestamp $timestamp \
+    --disable_early_stopping \
+    --sanitize \
+    --engine hf \
+    --max_tokens 512 \
 
 echo "[magpie.sh] Finish Generating Instructions!"
 
@@ -62,6 +66,7 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_res.py \
     --tensor_parallel $tensor_parallel \
     --gpu_memory_utilization $gpu_memory_utilization \
     --input_file $job_path/Magpie_${model_path##*/}_${total_prompts}_${timestamp}_ins.json \
-    --offline \
+    --engine hf \
+    --max_tokens 2048 \
 
 echo "[magpie.sh] Finish Generating Responses!"

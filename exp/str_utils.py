@@ -1,3 +1,5 @@
+import re
+
 def input_difficulty_rating(input):
     user_message = f'''
 # Instruction 
@@ -125,3 +127,150 @@ CODE_KEYWORDS = [
     "in D", "in R", "Solidity", "Verilog", "VHDL", "Visual Basic", "BASIC",
     "\n\n```", "\n```", "```", "import ", "def", "elif", "#include"
 ]
+
+
+def find_mcq_end(string):
+    patterns = [
+        r'\([A-D]\)',
+        r'[A-D][\.\)]',
+        r'[a-d][\.\)]',
+    ]
+    
+    combined_pattern = '|'.join(patterns)
+    matches = list(re.finditer(combined_pattern, string, re.IGNORECASE))
+    
+    if len(matches) >= 4:
+        last_match = matches[-1]
+        return True, last_match.end()
+    
+    return False, -1
+
+def find_next_newline(string):
+    single_newline = string.find('\n')
+    double_newline = string.find('\n\n')
+    
+    if single_newline == -1 and double_newline == -1:
+        return -1
+    elif single_newline == -1:
+        return double_newline
+    elif double_newline == -1:
+        return single_newline
+    else:
+        return min(single_newline, double_newline)
+
+def generate_variants(prefixes):
+    variants = []
+    for word in prefixes:
+        clean_word = word.lstrip('#* ').rstrip(':')
+        variants.append(f"{clean_word}:")
+        variants.append(f"**{clean_word}**")
+        variants.append(f"## {clean_word}:")
+    
+    return variants
+
+def remove_prefix(string):
+    # Remove numbers and alphabets with periods or brackets at the beginning
+    string = re.sub(r'^(\d+\.|\w+\))\s*', '', string).strip()
+    
+    # Remove prefixes like "Task:", "Prompt:", "Question:"
+    prefixes = [
+    "Task", "Prompt", "Original Prompt", "Question", "The Problem", "Problem",
+    "Scenario", "The senario", "Situation", "The situation", "Context",
+    "Challenge", "Query", "Request", "Instructions", "Instruction",
+    "Descriptions", "Description"
+    ]
+    prefixes = generate_variants(prefixes)
+
+    prefix_patterns = [re.escape(prefix) for prefix in prefixes]
+    
+    prefix_patterns.append(r"Question \d+:") # Question 1:, Question 2:, etc.
+    prefix_patterns.append(r"Question \d+\.") # Question 1., Question 2., etc.
+    prefix_patterns.append(r"Part \d+:") # Part 1:, Part 2:, etc.
+    prefix_patterns.append(r"Q\d+\.") # Q1., Q2., etc.
+    prefix_patterns.append(r"Q\d+:") # Q1:, Q2:, etc.
+    
+    combined_pattern = "|".join(prefix_patterns)
+    
+    match = re.match(f"^({combined_pattern})\s*", string, re.IGNORECASE)
+    if match:
+        return string[match.end():].strip()
+    
+    return string
+
+
+def instruction_post_process(instruction, model_path):
+    if "gemma-2" in model_path.lower():
+        # remove the prefix
+        instruction = remove_prefix(instruction)
+        # find mcq problems
+        is_mcq, end_pos = find_mcq_end(instruction)
+        assistant_markers = ["Answer:", "Answers:", "The answer is", "Correct answer", "The correct answer", "Answer is", "Explanation:", "Here are some", "Solution Approach:", "Solution:"]
+        assistant_pattern = r'\b(?:' + '|'.join(assistant_markers) + ')s?:'
+        assistant_match = re.search(assistant_pattern, instruction) # Exact match, no re.IGNORECASE
+
+        # TODO
+        # if is_mcq:
+        #     print(f"MCQ detected: {instruction}")
+        #     rest_of_string = instruction[end_pos:]
+        #     newline_pos = find_next_newline(rest_of_string)
+        #     if newline_pos != -1:
+        #         instruction = instruction[:end_pos + newline_pos].strip()
+        #     else:
+        #         instruction = instruction.strip()
+        #     print(f"Sanitized MCQ instruction: {instruction}")
+        #     class_num = 0
+
+        if instruction.startswith("*"):
+            if '?' in instruction:
+                instruction = instruction.split('?')[0].replace("*", "").strip() + '?'
+                instruction = remove_prefix(instruction)
+                class_num = 1
+                return instruction, class_num
+
+        instruction = remove_prefix(instruction)
+        if instruction.startswith('\"'):
+            if '?' in instruction:
+                instruction = instruction.split('?')[0].replace("\"", "").strip() + '?'
+                class_num = 2.1
+            else:
+                instruction = instruction.split('\n')[0].replace("\"", "").strip()
+                instruction = instruction.replace("*", "").strip()  
+                class_num = 2.2
+        elif instruction.startswith('<b>'):
+            instruction.split('\n')[0].replace('</b>', "").replace('<b>', "").strip()
+            instruction = instruction.replace("*", "").strip()
+            class_num = 3
+        elif assistant_match:
+            instruction = instruction[:assistant_match.start()].strip()
+            instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+            class_num = 4
+        elif instruction.split('\n')[0].strip().endswith(':'):
+            colon_pos = instruction.split('\n')[0].strip().rfind(':')
+            if '#' in instruction:
+                instruction = instruction.split('#')[0].strip()
+                instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+                class_num = 5.1
+            elif '?' in instruction:
+                instruction = instruction.split('?')[0].strip() + '?'
+                instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+                class_num = 5.2
+            else:
+                instruction = instruction.split('\n')[0].strip()
+                instruction = instruction.replace("*", "").strip()
+                class_num = 5.3
+        else:
+            if '?' in instruction:
+                instruction = instruction.split('?')[0].strip() + '?'
+                instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+                class_num = 6.1
+            else:
+                instruction = instruction.split('\n')[0].strip()
+                instruction = instruction.replace("*", "").strip()
+                class_num = 6.2
+
+        # Remove prefixes again
+        instruction = remove_prefix(instruction)
+
+        return instruction, class_num
+    else:
+        return instruction, 0
