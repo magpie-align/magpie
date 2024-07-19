@@ -19,6 +19,7 @@ boto3
 openai
 google-generativeai
 anthropic
+together
 
 # Widgets & Visualization
 matplotlib

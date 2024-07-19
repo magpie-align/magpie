@@ -53,7 +53,7 @@ if args.input_file is None:
 MODEL_NAME = args.model_path
 INPUT_FILE_NAME = args.input_file 
 BATCH_SIZE = args.batch_size
-CHECKPOINT_FILE = f"{INPUT_FILE_NAME[:INPUT_FILE_NAME.rfind('.')]}_checkpoint.json"
+CHECKPOINT_FILE = f"{INPUT_FILE_NAME[:INPUT_FILE_NAME.rfind('.')]}_res_checkpoint.json"
 CHECKPOINT_EVERY = args.checkpoint_every
 SAVED_FILE = f"{INPUT_FILE_NAME[:INPUT_FILE_NAME.rfind('.')]}_res.json"
 
@@ -95,7 +95,7 @@ def process_batch_with_api(batch):
         future_to_item = {
             executor.submit(
                 make_api_request_with_retry, 
-                {'content': item['instruction'], 'role': 'user'},
+                [{'content': item['instruction'], 'role': 'user'}],
                 API_PARAMS,
                 API_ENDPOINT,
                 API_HEADERS,
@@ -115,6 +115,7 @@ def process_batch_with_api(batch):
                     "max_tokens": args.max_tokens,
                     "stop_tokens": stop_tokens,
                     "output_generator": MODEL_NAME,
+                    "engine": api_model_name,
                 }
             except Exception as e:
                 print(f"Failed to process item: {item} with error: {str(e)}")
@@ -169,6 +170,7 @@ def process_batch(batch, llm, params, tokenizer=None):
             "max_tokens": args.max_tokens,
             "stop_tokens": stop_tokens,
             "output_generator": MODEL_NAME,
+            "engine": args.engine,
         }
     return batch
 
@@ -222,6 +224,7 @@ def main():
         print("Start together API engine...")
         llm = None
         params = None
+        tokenizer = None
     elif args.engine == "vllm":
         # Set the device
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
@@ -240,6 +243,7 @@ def main():
             repetition_penalty=args.repetition_penalty,
             stop_token_ids=stop_token_ids,
             )
+        tokenizer = AutoTokenizer.from_pretrained(args.model_path)
     elif args.engine == "hf":
         print("Start Hugging Face engine...")
         params = None
@@ -249,10 +253,11 @@ def main():
             device_map={'':torch.cuda.current_device()},
             torch_dtype=torch.bfloat16 if args.dtype == "bfloat16" else torch.float16
         )
+        tokenizer = AutoTokenizer.from_pretrained(args.model_path)
     else:
         raise ValueError("Invalid engine type.")
 
-    updated_dataset = generate_and_update(dataset, llm, params, tokenizer=AutoTokenizer.from_pretrained(MODEL_NAME))
+    updated_dataset = generate_and_update(dataset, llm, params, tokenizer=tokenizer)
 
     # Save final dataset
     save_dataset(updated_dataset, SAVED_FILE)

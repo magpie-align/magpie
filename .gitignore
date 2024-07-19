@@ -162,3 +162,6 @@ cython_debug/
 #.idea/
 data/obtain_labels_from_exisiting_files.ipynb
 data/final_dataset_process.ipynb
+Magpie Data/
+data_po/
+data_gemma/
