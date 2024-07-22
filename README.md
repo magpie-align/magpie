@@ -13,6 +13,9 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## News
+- [2024/07/21] Magpie Gemma2 dataset is out! [534K](https://huggingface.co/collections/Magpie-Align/magpie-gemma2-datasets-669da6aff21b09fdcecbd6ea) from Gemma-2-27b-it!
+- [2024/07/19] [Llama-3-8B-Magpie-Align-v0.3](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.3) is out with enhanced Chinese question-answering ability, thanks to our new [Chinese instruction dataset](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-200K-Chinese)!
+- [2024/07/14] [Llama-3-8B-Magpie-Align-v0.2](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.2) is out with enhanced reasoning ability, thanks to our new [reasoning booster dataset](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-150K)!
 - [2024/07/04] Magpie Qwen2 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) from Qwen2 72B and [3M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1) from Qwen2 7B.
 - [2024/07/03] 🏆 Our open aligned model, [Llama-3-8B-Magpie-Align-v0.1](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.1) is out! It is 🏆 the **best <30B Model** in [AI2 WildBench Leaderboard](https://huggingface.co/spaces/allenai/WildBench)! Even better than the official [Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) model!
 - [2024/06/24] Magpie Phi 3 dataset is out! [1M](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64) from Phi 3 Medium.
@@ -21,25 +24,26 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 
 ## Magpie Supports
 
-Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, and **Phi 3** series. Feel free to submit a pull request to [`configs/model_configs.json`](configs/model_configs.json) with more model support.
+Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and **Gemma-2** series. Please submit an issue for more model support.
 
-|Model Family | Magpie | Magpie Script | Dataset |
-|-------------|:------:|:-------|:-------|
-| [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f)
-| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | [7B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1),[72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1)
-| [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | [medium](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64)
-| [Gemma-2](https://huggingface.co/collections/google/gemma-2-release-667d6600fd5220e7b967f315)    | ⭕️ | [9B](magpie-gemma2-9b.sh),[27B](/home/nsl/zhangchen/magpie/scripts/magpie-gemma2-27b.sh)
+|Model Family | Magpie | Magpie Scripts | Datasets | Size |
+|-------------|:------:|:-------|:-------|:-------|
+| [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f) | 3M + 1M |
+| [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | [7B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1),[72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) | 3M + 1M |
+| [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | [medium](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64) | 1M |
+| [Gemma-2](https://huggingface.co/collections/google/gemma-2-release-667d6600fd5220e7b967f315)    | ⭕️ | [9B](magpie-gemma2-9b.sh),[27B](/home/nsl/zhangchen/magpie/scripts/magpie-gemma2-27b.sh) | [27B](https://huggingface.co/collections/Magpie-Align/magpie-gemma2-datasets-669da6aff21b09fdcecbd6ea) | 534K |
 | [Gemma-1.1](https://huggingface.co/collections/google/gemma-release-65d5efbccdbb8c4202ec078b)    | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
 | [Llama 2](https://huggingface.co/collections/meta-llama/llama-2-family-661da1f90a9d678b6f55773b)   | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
 | [Mistral](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)   | ⭕️ | [7B](scripts/magpie-mistral7b.sh)
 | [Yi](https://huggingface.co/collections/01-ai/yi-15-2024-05-663f3ecab5f815a3eaca7ca8)    | ⭕️ | [34B](scripts/magpie-yi34b.sh)
+| [DeepSeek Coder](https://huggingface.co/collections/deepseek-ai/deepseekcoder-v2-666bf4b274a5f556827ceeca) | ⭕️ | [Coder V2 Lite](https://github.com/magpie-align/magpie/blob/main/scripts/magpie-deepseek-coderv2-lite.sh)  
 
 - ✅: Works so great!
-- ⭕️: Partially work. We can get something interesting, but may apply a powerful filter and/or a logits processor.
+- ⭕️: Partially work. We can get something interesting, but we need to apply a powerful filter and/or a logit processor.
 - ❌: Not work.
 - ❓: Untested.
 
-We hope Magpie can contribute to the democratization of AI. With your help, we can create more data and enhance the transparency of model alignment processes!
+We hope Magpie can contribute to the democratization of AI with enhanced transparency of model alignment processes!
 
 ## Abstract
 <details><summary>Click Here</summary>
@@ -56,7 +60,7 @@ High-quality instruction data is critical for aligning large language models (LL
 ```
 git clone https://github.com/magpie-align/magpie.git
 cd magpie
-conda create -n magpie python=3.10
+conda create -n magpie python=3.10 -y
 conda activate magpie
 pip install -r requirements.txt
 ```
