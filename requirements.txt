@@ -1,6 +1,6 @@
 # LLM
-#  flash-attn[--no-build-isolation]
-vllm==0.4.2
+# flash-attn[--no-build-isolation]
+vllm==0.5.3.post1
 transformers
 sentence-transformers
 sentencepiece

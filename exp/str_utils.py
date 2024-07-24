@@ -272,5 +272,83 @@ def instruction_post_process(instruction, model_path):
         instruction = remove_prefix(instruction)
 
         return instruction, class_num
+
+    elif "llama-3.1" in model_path.lower():
+        # remove the prefix
+        instruction = remove_prefix(instruction)
+        # find mcq problems
+        is_mcq, end_pos = find_mcq_end(instruction)
+        assistant_markers = ["Answer:", "Answers:", "The answer is", "Correct answer", "The correct answer", "Answer is", "Explanation:", "Here are some", "Solution Approach:", "Solution:"]
+        assistant_pattern = r'\b(?:' + '|'.join(assistant_markers) + ')s?:'
+        assistant_match = re.search(assistant_pattern, instruction) # Exact match, no re.IGNORECASE
+
+        # TODO
+        # if is_mcq:
+        #     print(f"MCQ detected: {instruction}")
+        #     rest_of_string = instruction[end_pos:]
+        #     newline_pos = find_next_newline(rest_of_string)
+        #     if newline_pos != -1:
+        #         instruction = instruction[:end_pos + newline_pos].strip()
+        #     else:
+        #         instruction = instruction.strip()
+        #     print(f"Sanitized MCQ instruction: {instruction}")
+        #     class_num = 0
+
+        if instruction.startswith("*"):
+            if '?' in instruction:
+                instruction = instruction.split('?')[0].replace("*", "").strip() + '?'
+                instruction = remove_prefix(instruction)
+                class_num = 1
+                return instruction, class_num
+
+        instruction = remove_prefix(instruction)
+        if instruction.startswith('\"'):
+            if '?' in instruction:
+                instruction = instruction.split('?')[0].replace("\"", "").strip() + '?'
+                class_num = 2.1
+            else:
+                instruction = instruction.split('\n')[0].replace("\"", "").strip()
+                instruction = instruction.replace("*", "").strip()  
+                class_num = 2.2
+        elif instruction.startswith('<b>'):
+            instruction.split('\n')[0].replace('</b>', "").replace('<b>', "").strip()
+            instruction = instruction.replace("*", "").strip()
+            class_num = 3
+        elif assistant_match:
+            instruction = instruction[:assistant_match.start()].strip()
+            instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+            class_num = 4
+        elif instruction.startswith('## Step 1'):
+            print(instruction)
+            class_num = 5
+        elif instruction.split('\n')[0].strip().endswith(':'):
+            colon_pos = instruction.split('\n')[0].strip().rfind(':')
+            if '#' in instruction:
+                instruction = instruction.split('#')[0].strip()
+                instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+                class_num = 6.1
+            elif '?' in instruction:
+                instruction = instruction.split('?')[0].strip() + '?'
+                instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+                class_num = 6.2
+            else:
+                instruction = instruction.split('\n')[0].strip()
+                instruction = instruction.replace("*", "").strip()
+                class_num = 6.3
+        else:
+            if '?' in instruction:
+                instruction = instruction.split('?')[0].strip() + '?'
+                instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
+                class_num = 99.1
+            else:
+                instruction = instruction.split('\n')[0].strip()
+                instruction = instruction.replace("*", "").strip()
+                class_num = 99.2
+
+        # Remove prefixes again
+        instruction = remove_prefix(instruction)
+
+        return instruction, class_num
+    
     else:
         return instruction, 0
