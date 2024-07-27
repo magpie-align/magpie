@@ -13,6 +13,7 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## News
+- [2024/07/25] Magpie Llama-3.1 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-1M-v0.1) from Meta-Llama-3.1-70B-Instruct! More friendly license compared with Llama-3 😃!
 - [2024/07/21] Magpie Gemma2 dataset is out! [534K](https://huggingface.co/collections/Magpie-Align/magpie-gemma2-datasets-669da6aff21b09fdcecbd6ea) from Gemma-2-27b-it!
 - [2024/07/19] [Llama-3-8B-Magpie-Align-v0.3](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.3) is out with enhanced Chinese question-answering ability, thanks to our new [Chinese instruction dataset](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-200K-Chinese)!
 - [2024/07/14] [Llama-3-8B-Magpie-Align-v0.2](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.2) is out with enhanced reasoning ability, thanks to our new [reasoning booster dataset](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-150K)!
@@ -28,7 +29,7 @@ Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and *
 
 |Model Family | Magpie | Magpie Scripts | Datasets | Size | Note |
 |-------------|:------:|:-------|:-------|:-------|:-------|
-| [Llama 3.1](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)     | ⭕️ | [8B](scripts/magpie-llama3.1-8b.sh),[70B](scripts/magpie-llama3.1-70b.sh) ||| Apply a logits processor to surpress `## Step 1:` |
+| [Llama 3.1](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)     | ⭕️ | [8B](scripts/magpie-llama3.1-8b.sh),[70B](scripts/magpie-llama3.1-70b.sh) | [70B](https://huggingface.co/collections/Magpie-Align/magpie-llama31-datasets-66a45ed727be07f53c8ff294) | 1M | Apply a logits processor to surpress markdown. |
 | [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f) | 3M + 1M |
 | [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh) | [7B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1),[72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) | 3M + 1M |
 | [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | [medium](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64) | 1M |
