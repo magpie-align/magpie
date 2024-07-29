@@ -133,9 +133,9 @@ Please refer to the [fine-tune](fine-tune/) directory for instructions.
 
 ## Citation
 
-If you find the model, data, or code useful, please cite our paper:
+If you find the model, data, or code useful, please cite our paper 🤩:
 ```
-@article{xu2024magpie,j
+@article{xu2024magpie,
   title={Magpie: Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing},
   author={Zhangchen Xu and Fengqing Jiang and Luyao Niu and Yuntian Deng and Radha Poovendran and Yejin Choi and Bill Yuchen Lin},
   journal={ArXiv},
@@ -144,3 +144,7 @@ If you find the model, data, or code useful, please cite our paper:
   url={https://api.semanticscholar.org/CorpusID:270391432}
 }
 ```
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=magpie-align/magpie&type=Date)](https://star-history.com/#magpie-align/magpie&Date)
