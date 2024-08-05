@@ -4,7 +4,7 @@
     "stop_tokens": [
       "<|eot_id|>",
       "<|end_of_text|>",
-      "<|starter_header_id|>",
+      "<|start_header_id|>",
       "<|end_header_id|>"
     ],
     "stop_token_ids": [
@@ -28,7 +28,7 @@
     "stop_tokens": [
       "<|eot_id|>",
       "<|end_of_text|>",
-      "<|starter_header_id|>",
+      "<|start_header_id|>",
       "<|end_header_id|>"
     ],
     "stop_token_ids": [
@@ -52,7 +52,7 @@
     "stop_tokens": [
       "<|eot_id|>",
       "<|end_of_text|>",
-      "<|starter_header_id|>",
+      "<|start_header_id|>",
       "<|end_header_id|>"
     ],
     "stop_token_ids": [
@@ -76,7 +76,7 @@
     "stop_tokens": [
       "<|eot_id|>",
       "<|end_of_text|>",
-      "<|starter_header_id|>",
+      "<|start_header_id|>",
       "<|end_header_id|>"
     ],
     "stop_token_ids": [
