@@ -46,6 +46,8 @@ Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and *
 - ❌: Not work.
 - ❓: Untested.
 
+The navigation of available Magpie datasets can be found [here](navigation.md).
+
 We hope Magpie can contribute to the democratization of AI with enhanced transparency of model alignment processes!
 
 ## Abstract
