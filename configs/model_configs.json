@@ -206,6 +206,25 @@
     ],
     "pre_query_template": "<|im_start|>user\n"
   },
+  "Qwen/Qwen2-Math-7B-Instruct": {
+    "model_name": "Qwen/Qwen2-Math-7B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>user\n",
+    "pre_query_template_with_system_prompt": "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
   "Qwen/Qwen1.5-7B-Chat": {
     "model_name": "Qwen/Qwen1.5-7B-Chat",
     "stop_tokens": [
