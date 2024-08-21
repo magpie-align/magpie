@@ -205,7 +205,7 @@ def instruction_post_process(instruction, model_path):
         # find mcq problems
         is_mcq, end_pos = find_mcq_end(instruction)
         assistant_markers = ["Answer:", "Answers:", "The answer is", "Correct answer", "The correct answer", "Answer is", "Explanation:", "Here are some", "Solution Approach:", "Solution:"]
-        assistant_pattern = r'\b(?:' + '|'.join(assistant_markers) + ')s?:'
+        assistant_pattern = r'(?:' + '|'.join(assistant_markers) + ')s?:'
         assistant_match = re.search(assistant_pattern, instruction) # Exact match, no re.IGNORECASE
 
         # TODO
@@ -228,6 +228,7 @@ def instruction_post_process(instruction, model_path):
                 return instruction, class_num
 
         instruction = remove_prefix(instruction)
+
         if instruction.startswith('\"'):
             if '?' in instruction:
                 instruction = instruction.split('?')[0].replace("\"", "").strip() + '?'
@@ -279,8 +280,14 @@ def instruction_post_process(instruction, model_path):
         # find mcq problems
         is_mcq, end_pos = find_mcq_end(instruction)
         assistant_markers = ["Answer:", "Answers:", "The answer is", "Correct answer", "The correct answer", "Answer is", "Explanation:", "Here are some", "Solution Approach:", "Solution:"]
-        assistant_pattern = r'\b(?:' + '|'.join(assistant_markers) + ')s?:'
+        assistant_pattern = r'(?:' + '|'.join(assistant_markers) + ')s?:'
         assistant_match = re.search(assistant_pattern, instruction) # Exact match, no re.IGNORECASE
+        print(f"Assistant match: {assistant_match}")
+
+        step_makers = ["# Step 1", "## Step 1", "### Step 1"]
+        step_pattern = r'(?:' + '|'.join(step_makers) + r'):?'
+        step_match = re.search(step_pattern, instruction) # Exact match, no re.IGNORECASE
+        print(f"Step match: {step_match}")
 
         # TODO
         # if is_mcq:
@@ -318,8 +325,9 @@ def instruction_post_process(instruction, model_path):
             instruction = instruction[:assistant_match.start()].strip()
             instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
             class_num = 4
-        elif instruction.startswith('## Step 1'):
-            print(instruction)
+        elif step_match:
+            instruction = instruction[:step_match.start()].strip()
+            instruction = instruction.replace("**", "").strip() if instruction.find("**") == 1 else instruction.strip()
             class_num = 5
         elif instruction.split('\n')[0].strip().endswith(':'):
             colon_pos = instruction.split('\n')[0].strip().rfind(':')

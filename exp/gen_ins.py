@@ -134,7 +134,10 @@ with open("../configs/model_configs.json", "r", encoding="utf-8") as f:
 def de_md_logits_processor_for_llama3_1(token_ids, logits):
     # Only process the initial logits
     if len(token_ids) == 0:
+        logits[2] = -9999.999 # "#": 2,
         logits[567] = -9999.999 # "##": 567,
+        logits[14711] = -9999.999 # "###": 14711,
+        logits[827] = -9999.999 # "####": 827,
 
     return logits
 
