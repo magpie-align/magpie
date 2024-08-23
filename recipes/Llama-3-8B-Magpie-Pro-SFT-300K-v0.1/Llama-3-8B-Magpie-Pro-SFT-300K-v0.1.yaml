@@ -1,6 +1,7 @@
 base_model: meta-llama/Meta-Llama-3-8B
 model_type: LlamaForCausalLM
 tokenizer_type: AutoTokenizer
+chat_template: llama3
 
 load_in_8bit: false
 load_in_4bit: false
@@ -12,7 +13,7 @@ datasets:
     conversation: llama3
 dataset_prepared_path: last_run_prepared
 val_set_size: 0.001
-output_dir: ./out_Llama-3-8B-Magpie-Pro-300K-FilteredL
+output_dir: ./out_Llama-3-8B-Magpie-Pro-300K-v0.1
 
 sequence_len: 8192
 sample_packing: true

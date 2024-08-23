@@ -132,7 +132,7 @@ where `***_sharegpt.jsonl` is the dataset path obtained in the previous step. Th
 We provide a Jupyter notebook [here](data/data_filter.ipynb) for simple filtering. You can adjust the filtering parameters to design and apply your own filter based on your needs.
 
 ## Fine-tuning
-Please refer to the [fine-tune](fine-tune/) directory for instructions.
+Please refer to the [recipes](recipes/) directory for instructions.
 
 ## Citation
 

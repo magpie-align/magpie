@@ -1,0 +1,44 @@
+# Customized Configs
+model_name_or_path: Magpie-Align/Llama-3-8B-Magpie-Align-SFT-v0.2
+hub_model_id: Magpie-Align/Llama-3-8B-Magpie-Align-v0.2
+output_dir: alignment_handbook_out/Llama-3-8B-Magpie-Align-v0.2
+run_name: Llama-3-8B-Magpie-Align-v0.2
+
+dataset_mixer:
+  princeton-nlp/llama3-ultrafeedback-armorm: 1.0
+dataset_splits:
+- train
+- test
+preprocessing_num_workers: 24
+
+# DPOTrainer arguments
+bf16: true
+beta: 0.01
+learning_rate: 0.8e-6
+gradient_accumulation_steps: 8
+per_device_train_batch_size: 2
+per_device_eval_batch_size: 4
+num_train_epochs: 1
+max_length: 2048
+max_prompt_length: 1800
+warmup_ratio: 0.1
+logging_steps: 1
+lr_scheduler_type: cosine
+optim: adamw_torch
+
+torch_dtype: null
+use_flash_attention_2: true
+do_eval: true
+evaluation_strategy: steps
+eval_steps: 100
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: False
+log_level: info
+push_to_hub: true
+save_strategy: "steps"
+save_steps: 100
+save_total_limit: 1
+seed: 42
+report_to:
+- wandb
