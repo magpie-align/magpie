@@ -7,6 +7,7 @@
 This is the official repository for "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)". Magpie generates high-quality alignment data by prompting aligned LLMs with their pre-query templates. Unlike many existing synthetic data generation methods, Magpie doesn't rely on prompt engineering or seed questions for generating synthetic data. Instead, it uses the prompt template of an aligned LLM to generate both the user query and an LLM response.
 
 - 🤗 [**Huggingface (Models and Datasets)**](https://huggingface.co/Magpie-Align)
+- 🧭 [**Dataset Navigation**](navigation.md)
 - 🕸️ [**Website**](https://magpie-align.github.io/)
 - 📄 [**Technical Report**](https://arxiv.org/abs/2406.08464)
 - 🤗 [**Magpie Demo**](https://huggingface.co/spaces/davanstrien/magpie) (Thanks a lot for the implementation from @davanstrien!)
@@ -132,7 +133,7 @@ where `***_sharegpt.jsonl` is the dataset path obtained in the previous step. Th
 We provide a Jupyter notebook [here](data/data_filter.ipynb) for simple filtering. You can adjust the filtering parameters to design and apply your own filter based on your needs.
 
 ## Fine-tuning
-Please refer to the [recipes](recipes/) directory for instructions.
+Please take a look at the [recipes](recipes/) directory for instructions and our Magpie model recipes.
 
 ## Citation
 
