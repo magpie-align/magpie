@@ -110,8 +110,9 @@ with open(output_file, 'a') as file:
             min_distance = float(scores[1]) # should exclude itself
             dataset["train"][start_idx + i]["min_distance"] = min_distance
 
+            # Filter indices based on the distance threshold
             filtered_indices = [index for index, score in zip(indices, scores) if score < distance_threshold]
-            # Should remove itself
+            # Remove itself from the filtered indices
             filtered_indices = [index for index in filtered_indices if index != start_idx + i]
 
             if len(filtered_indices) == 0:
@@ -142,3 +143,4 @@ with open(output_file, 'a') as file:
         print(f"Batch {batch_idx} is saved to the output file")
 
 print("Distance calculation is completed.")
+
