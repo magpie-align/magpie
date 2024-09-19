@@ -188,8 +188,134 @@
     ],
     "pre_query_template": "<|im_start|>user\n"
   },
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+    "model_name": "Qwen/Qwen2.5-1.5B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
+  "Qwen/Qwen2.5-3B-Instruct": {
+    "model_name": "Qwen/Qwen2.5-3B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
+  "Qwen/Qwen2.5-7B-Instruct": {
+    "model_name": "Qwen/Qwen2.5-7B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
+  "Qwen/Qwen2.5-14B-Instruct": {
+    "model_name": "Qwen/Qwen2.5-14B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
+  "Qwen/Qwen2.5-32B-Instruct": {
+    "model_name": "Qwen/Qwen2.5-32B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
+  "Qwen/Qwen2.5-72B-Instruct": {
+    "model_name": "Qwen/Qwen2.5-72B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n"
+  },
   "Qwen/Qwen2-7B-Instruct": {
     "model_name": "Qwen/Qwen2-7B-Instruct",
+    "stop_tokens": [
+      "<|im_start|>",
+      "<|im_end|>",
+      "<|endoftext|>"
+    ],
+    "stop_token_ids": [
+      151643,
+      151644,
+      151645
+    ],
+    "stop_tokens_assistant": [
+      "Assistant",
+      "assistant"
+    ],
+    "pre_query_template": "<|im_start|>user\n"
+  },
+  "Qwen/Qwen2-1.5B-Instruct": {
+    "model_name": "Qwen/Qwen2-1.5B-Instruct",
     "stop_tokens": [
       "<|im_start|>",
       "<|im_end|>",
@@ -315,6 +441,23 @@
     ],
     "pre_query_template": "<bos><start_of_turn>user\n\n"
   },
+  "google/gemma-2-2b-it": {
+    "model_name": "google/gemma-2-2b-it",
+    "stop_tokens": [
+      "<eos>",
+      "<bos>",
+      "<end_of_turn>"
+    ],
+    "stop_token_ids": [
+      1,
+      2,
+      107
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "pre_query_template": "<bos><start_of_turn>user\n\n"
+  },
   "microsoft/Phi-3-mini-128k-instruct": {
     "model_name": "microsoft/Phi-3-mini-128k-instruct",
     "stop_tokens": [
@@ -345,6 +488,27 @@
   "microsoft/Phi-3-small-128k-instruct": {
     "model_name": "microsoft/Phi-3-small-128k-instruct",
     "stop_tokens": [
+      "<|endoftext|>",
+      "<|user|>",
+      "<|assistant|>",
+      "<|system|>",
+      "<|end|>"
+    ],
+    "stop_token_ids": [
+      100257,
+      100262,
+      100263,
+      100261,
+      100266
+    ],
+    "stop_tokens_assistant": [
+      "assistant"
+    ],
+    "pre_query_template": "<|endoftext|><|user|>\n"
+  },
+  "microsoft/Phi-3-medium-128k-instruct": {
+    "model_name": "microsoft/Phi-3-medium-128k-instruct",
+    "stop_tokens": [
       "</s>",
       "<s>",
       "<unk>",
@@ -369,8 +533,8 @@
     ],
     "pre_query_template": "<s> <|user|>\n"
   },
-  "microsoft/Phi-3-medium-128k-instruct": {
-    "model_name": "microsoft/Phi-3-medium-128k-instruct",
+  "microsoft/Phi-3.5-mini-instruct": {
+    "model_name": "microsoft/Phi-3.5-mini-instruct",
     "stop_tokens": [
       "</s>",
       "<s>",

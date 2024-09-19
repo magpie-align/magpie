@@ -1,6 +1,7 @@
+--extra-index-url https://flashinfer.ai/whl/cu124/torch2.4/
 # LLM
 # flash-attn[--no-build-isolation]
-vllm==0.5.4
+vllm==0.5.5
 transformers
 sentence-transformers
 sentencepiece
@@ -11,6 +12,7 @@ accelerate
 bitsandbytes
 autoawq
 ray
+flashinfer
 
 # Cloud API & Chat
 git+https://github.com/lm-sys/FastChat.git
