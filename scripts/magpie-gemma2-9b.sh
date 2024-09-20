@@ -42,7 +42,7 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_ins.py \
     --model_path $model_path \
     --total_prompts $total_prompts \
     --top_p $ins_topp \
-    --temp $ins_temp \
+    --temperature $ins_temp \
     --tensor_parallel $tensor_parallel \
     --gpu_memory_utilization $gpu_memory_utilization \
     --n $n \
@@ -51,7 +51,7 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_ins.py \
     --disable_early_stopping \
     --sanitize \
     --engine hf \
-    --max_tokens 512 \
+    --max_tokens 512
 
 echo "[magpie.sh] Finish Generating Instructions!"
 
@@ -61,12 +61,12 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_res.py \
     --model_path $model_path \
     --batch_size $batch_size \
     --top_p $res_topp \
-    --temp $res_temp \
-    --rep $res_rep \
+    --temperature $res_temp \
+    --repetition_penalty $res_rep \
     --tensor_parallel $tensor_parallel \
     --gpu_memory_utilization $gpu_memory_utilization \
     --input_file $job_path/Magpie_${model_path##*/}_${total_prompts}_${timestamp}_ins.json \
     --engine hf \
-    --max_tokens 2048 \
+    --max_tokens 2048
 
 echo "[magpie.sh] Finish Generating Responses!"
