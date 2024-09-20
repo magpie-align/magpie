@@ -62,6 +62,7 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_res.py \
     --tensor_parallel $tensor_parallel \
     --gpu_memory_utilization $gpu_memory_utilization \
     --input_file $job_path/Magpie_${model_path##*/}_${total_prompts}_${timestamp}_ins.json \
+    --use_tokenizer_template \
     --offline
 
 echo "[magpie.sh] Finish Generating Responses!"
