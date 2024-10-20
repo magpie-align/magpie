@@ -1,4 +1,15 @@
 # Dataset Navigation 🧭
+
+### [**Meta Llama 3.1**](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)
+|Model Name | Dataset | Type | Description |
+|-------------|:-------|:-------|:-------|
+| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-1M-v0.1) | SFT | 1M Raw conversations built with Meta Llama 3.1 70B.
+| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-300K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered) | SFT | Apply a filter and select 300K high quality conversations.
+| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-500K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-500K-Filtered) | SFT | Apply a filter and select 500K high quality conversations.
+| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-MT-500K](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-MT-500K-v0.1) | SFT | Extend Magpie-Llama-3.1-Pro-500K-Filtered to multi-turn.
+| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-MT-300K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-MT-300K-Filtered) | SFT | Select 300K high quality multi-turn conversations from Magpie-Llama-3.1-Pro-MT-500K.
+| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-DPO-100K](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-DPO-100K-v0.1) | DPO | DPO dataset via Best-of-N sampling and rewards.
+
 ### [**Meta Llama 3**](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)
 |Model Name | Dataset | Type | Description |
 |-------------|:-------|:-------|:-------|
@@ -11,16 +22,11 @@
 | [Llama 3 8B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) | [Magpie-Air-MT-300K](https://huggingface.co/datasets/Magpie-Align/Magpie-Air-MT-300K-v0.1) | SFT | Select 300K difficult questions and extend to multi-turn conversations.
 | [Llama 3 8B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) | [Magpie-Air-DPO-100K](https://huggingface.co/datasets/Magpie-Align/Magpie-Air-DPO-100K-v0.1) | DPO | DPO dataset via Best-of-N sampling and rewards.
 
-### [**Meta Llama 3.1**](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)
+### [**Qwen2.5**]([https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e))
 |Model Name | Dataset | Type | Description |
 |-------------|:-------|:-------|:-------|
-| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-1M-v0.1) | SFT | 1M Raw conversations built with Meta Llama 3.1 70B.
-| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-300K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered) | SFT | Apply a filter and select 300K high quality conversations.
-| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-500K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-500K-Filtered) | SFT | Apply a filter and select 500K high quality conversations.
-| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-MT-500K](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-MT-500K-v0.1) | SFT | Extend Magpie-Llama-3.1-Pro-500K-Filtered to multi-turn.
-| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-MT-300K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-MT-300K-Filtered) | SFT | Select 300K high quality multi-turn conversations from Magpie-Llama-3.1-Pro-MT-500K.
-| [Llama 3.1 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct) | [Magpie-Llama-3.1-Pro-DPO-100K](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-DPO-100K-v0.1) | DPO | DPO dataset via Best-of-N sampling and rewards.
-
+| [Qwen2.5 72B Instruct](https://huggingface.co/Qwen/Qwen2.5-72B-Instruct) | [Magpie-Qwen2.5-Pro-1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) | SFT | 1M Raw conversations built with Qwen2.5 72B Instruct.
+| [Qwen2.5 72B Instruct](https://huggingface.co/Qwen/Qwen2.5-72B-Instruct) | [Magpie-Qwen2.5-Pro-300K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-300K-Filtered) | SFT | Apply a filter and select 300K high quality conversations.
 
 ### [**Qwen2**](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)
 |Model Name | Dataset | Type | Description |
