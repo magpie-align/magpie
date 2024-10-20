@@ -14,6 +14,7 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## 🐦 News
+- [2024/10/20] Magpie Qwen2.5 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) from Qwen2.5 72B!
 - [2024/09/17] Ship two new models with SOTA performance: 𝙼𝚊𝚐𝚙𝚒𝚎𝙻𝙼-𝙲𝚑𝚊𝚝 (4B & 8B)! See collection [here](https://huggingface.co/collections/Magpie-Align/magpielm-66e2221f31fa3bf05b10786a)!
 - [2024/08/19] Three preference optimization datasets, [Magpie-Air-DPO-100K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Air-DPO-100K-v0.1), [Magpie-Pro-DPO-100K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Pro-DPO-100K-v0.1), and [Magpie-Llama-3.1-Pro-DPO-100K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-DPO-100K-v0.1) are out! 
 - [2024/07/25] Magpie Llama-3.1 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-1M-v0.1) from Meta-Llama-3.1-70B-Instruct! More friendly license compared with Llama-3 😃!
@@ -28,16 +29,16 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 
 ## Magpie Supports
 
-Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and **Gemma-2** series. Please submit an issue for more model support.
+Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and **Gemma-2** series. Please [submit an issue](https://github.com/magpie-align/magpie/issues/new) for more model support.
 
-|Model Family | Magpie | Magpie Scripts | Datasets | Size | Note |
-|-------------|:------:|:-------|:-------|:-------|:-------|
-| [Llama 3.1](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)     | ⭕️ | [8B](scripts/magpie-llama3.1-8b.sh),[70B](scripts/magpie-llama3.1-70b.sh) | [70B](https://huggingface.co/collections/Magpie-Align/magpie-llama31-datasets-66a45ed727be07f53c8ff294),[405B(Argilla)](https://huggingface.co/datasets/argilla/magpie-ultra-v0.1) | 1M | Apply a logits processor to surpress markdown format. |
+|Model Family | Magpie | Magpie Scripts | Datasets | Size |
+|-------------|:------:|:-------|:-------|:-------|
+| [Llama 3.1](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)     | ✅ * | [8B](scripts/magpie-llama3.1-8b.sh),[70B](scripts/magpie-llama3.1-70b.sh) | [70B](https://huggingface.co/collections/Magpie-Align/magpie-llama31-datasets-66a45ed727be07f53c8ff294),[405B(Argilla)](https://huggingface.co/datasets/argilla/magpie-ultra-v0.1) | 1M |
 | [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f) | 3M + 1M |
+| [Qwen2.5](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e)     | ✅ | [3B](scripts/magpie-qwen2.5-3b.sh),[7B](scripts/magpie-qwen2.5-7b.sh),[14B](scripts/magpie-qwen2.5-14b.sh),[32B](scripts/magpie-qwen2.5-32b.sh),[72B](scripts/magpie-qwen2.5-72b.sh) | [72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) | 1M | 
 | [Qwen2](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)     | ✅ | [7B](scripts/magpie-qwen2-7b.sh),[72B](scripts/magpie-qwen2-72b.sh),[Math 7B](scripts/magpie-qwen2-math-7b.sh) | [7B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Air-3M-v0.1),[72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-1M-v0.1) | 3M + 1M |
 | [Phi 3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3)     | ✅ | [mini](scripts/magpie-phi3mini.sh),[small](scripts/magpie-phi3small.sh),[medium](scripts/magpie-phi3medium.sh) | [medium](https://huggingface.co/collections/Magpie-Align/magpie-phi3-667a7a45f1a406cd61685d64) | 1M |
-| [Gemma-2](https://huggingface.co/collections/google/gemma-2-release-667d6600fd5220e7b967f315)    | ⭕️ | [9B](magpie-gemma2-9b.sh),[27B](scripts/magpie-gemma2-27b.sh) | [27B](https://huggingface.co/collections/Magpie-Align/magpie-gemma2-datasets-669da6aff21b09fdcecbd6ea) | 534K | Apply a [filter](exp/str_utils.py) before generating responses. |
-| [Qwen2.5](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e)     | ⭕️ | [3B](scripts/magpie-qwen2.5-3b.sh),[7B](scripts/magpie-qwen2.5-7b.sh),[14B](scripts/magpie-qwen2.5-14b.sh),[32B](scripts/magpie-qwen2.5-32b.sh),[72B](scripts/magpie-qwen2.5-72b.sh)
+| [Gemma-2](https://huggingface.co/collections/google/gemma-2-release-667d6600fd5220e7b967f315)    | ✅ ** | [9B](magpie-gemma2-9b.sh),[27B](scripts/magpie-gemma2-27b.sh) | [27B](https://huggingface.co/collections/Magpie-Align/magpie-gemma2-datasets-669da6aff21b09fdcecbd6ea) | 534K |
 | [Gemma-1.1](https://huggingface.co/collections/google/gemma-release-65d5efbccdbb8c4202ec078b)    | ⭕️ | [7B](scripts/magpie-gemma7b.sh)
 | [Llama 2](https://huggingface.co/collections/meta-llama/llama-2-family-661da1f90a9d678b6f55773b)   | ⭕️ | [7B](scripts/magpie-llama2-7b.sh),[70B](scripts/magpie-llama2-70b.sh)
 | [Vicuna](https://lmsys.org/blog/2023-03-30-vicuna/)   | ⭕️ | [7B](scripts/magpie-vicuna-7b.sh)
@@ -45,8 +46,8 @@ Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and *
 | [Yi](https://huggingface.co/collections/01-ai/yi-15-2024-05-663f3ecab5f815a3eaca7ca8)    | ⭕️ | [34B](scripts/magpie-yi34b.sh)
 | [DeepSeek Coder](https://huggingface.co/collections/deepseek-ai/deepseekcoder-v2-666bf4b274a5f556827ceeca) | ⭕️ | [Coder V2 Lite](https://github.com/magpie-align/magpie/blob/main/scripts/magpie-deepseek-coderv2-lite.sh)  
 
-- ✅: Works so great!
-- ⭕️: It works! We can get something interesting, but we may need to apply an additional filter and/or a logit processor.
+- ✅: It works great! (**\*** Apply a logits processor to surpress markdown; **\*\*** Apply a [filter](exp/str_utils.py) before generating responses.)
+- ⭕️: It works! We can get something interesting, but we may need to design an additional logit processor and/or a filter.
 - ❌: Not work.
 - ❓: Untested.
 
