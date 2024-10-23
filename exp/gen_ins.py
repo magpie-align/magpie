@@ -52,196 +52,202 @@ def get_args():
 
     return parser.parse_args()
 
-args = get_args()
-print(f"Instruction Generation Manager. Arguments: {args}") # For logging
-
-if args.total_prompts is None:
-    if args.repeat is None:
-        raise ValueError("Either total prompts or repeat should be specified.")
-    args.total_prompts = args.repeat * args.n
-else:
-    # If total prompts is specified, repeat will be ignored
-    args.repeat = int(np.ceil(args.total_prompts / args.n))
-
-# Set the random seed for NumPy
-if args.seed is not None:
-    np.random.seed(args.seed)
-    # Set the random seed for PyTorch
-    torch.manual_seed(args.seed)
-    # If you are using CUDA (i.e., a GPU), also set the seed for it
-    torch.cuda.manual_seed_all(args.seed)
-
-# Create output file / folder
-output_filename = f"Magpie_{args.model_path.split('/')[-1]}_{args.total_prompts}_{args.timestamp}_ins.json"
-if not args.job_name:
-    if not os.path.exists(args.output_folder):
-        os.makedirs(args.output_folder)
-    output_dir = f"{args.output_folder}/{output_filename}"
-else:
-    output_dir = f"{args.output_folder}/{args.job_name}/{output_filename}"
-
-# Set the device
-os.environ["CUDA_VISIBLE_DEVICES"] = args.device
-# Set generation engine
-if args.engine == "vllm":
-    # Create vllm instance  
-    llm = LLM(model=args.model_path, 
-            dtype=args.dtype,
-            trust_remote_code=True,
-            gpu_memory_utilization=args.gpu_memory_utilization,
-            max_model_len=args.max_model_len,
-            swap_space=args.swap_space,
-            tensor_parallel_size=args.tensor_parallel_size,
-            seed=args.seed if args.seed is not None else args.timestamp,
-            enable_prefix_caching=True)
-elif args.engine == "hf":
-    # Load the model and tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(args.model_path)
-    model = AutoModelForCausalLM.from_pretrained(
-        args.model_path,
-        device_map={'':torch.cuda.current_device()},
-        torch_dtype=torch.bfloat16 if args.dtype == "bfloat16" else torch.float16
-    )
-
-
-# Obtain config from configs/model_configs.json
-with open("../configs/model_configs.json", "r", encoding="utf-8") as f:
-    model_configs = json.load(f)
-    model_config = model_configs[args.model_path]
-    if args.control_tasks:
-        pre_query_template = model_config[f"pre_query_template_{args.control_tasks}"]
-        print("Control task: {args.control_tasks}")
-    elif args.system_prompt:
-        pre_query_template = model_config["pre_query_template_with_system_prompt"]
-        print("System prompt enabled. Warning: The system prompt may degrade the performance.")
+# Main function to control workflow
+def main():
+    args = get_args()
+    print(f"Instruction Generation Manager. Arguments: {args}") # For logging
+    
+    if args.total_prompts is None:
+        if args.repeat is None:
+            raise ValueError("Either total prompts or repeat should be specified.")
+        args.total_prompts = args.repeat * args.n
     else:
-        pre_query_template = model_config["pre_query_template"]
-    stop_tokens = model_config["stop_tokens"]
-    stop_tokens_assistant = model_config["stop_tokens_assistant"]
-    stop_tokens += stop_tokens_assistant
-    stop_token_ids = model_config["stop_token_ids"]
-
-    # Process early stopping. We found that sometimes LLM will generate responses immediately after the \n token.
-    if args.early_stopping:
-        stop_tokens.append("\n")
-
-    print(f"Pre-query template: {pre_query_template}")
-    print(f"Stop tokens: {stop_tokens}")
-    print(f"Stop token ids: {stop_token_ids}")
-
-
-# Initialize logits processors for llama-3.1
-def de_md_logits_processor_for_llama3_1(token_ids, logits):
-    # Only process the initial logits
-    if len(token_ids) == 0:
-        logits[2] = -9999.999 # "#": 2,
-        logits[567] = -9999.999 # "##": 567,
-        logits[14711] = -9999.999 # "###": 14711,
-        logits[827] = -9999.999 # "####": 827,
-
-    return logits
-
-if args.logits_processor and "llama-3.1" in args.model_path.lower():
-    logits_processor = de_md_logits_processor_for_llama3_1
-    print(f"Logits processor applied: {logits_processor}")
-else:
-    logits_processor = None
+        # If total prompts is specified, repeat will be ignored
+        args.repeat = int(np.ceil(args.total_prompts / args.n))
     
-# Define sampling parameters
-sampling_params = SamplingParams(
-    n=args.n,
-    temperature=args.temperature,
-    top_p=args.top_p,
-    max_tokens=args.max_tokens,
-    skip_special_tokens=args.skip_special_tokens,
-    stop=stop_tokens,
-    stop_token_ids=stop_token_ids,
-    logits_processors=[logits_processor] if logits_processor else None
-)
-
-################
-# Generate outputs
-################
-results = []
-for rounds in tqdm(range(args.repeat)):
-    # Generate outputs
+    # Set the random seed for NumPy
+    if args.seed is not None:
+        np.random.seed(args.seed)
+        # Set the random seed for PyTorch
+        torch.manual_seed(args.seed)
+        # If you are using CUDA (i.e., a GPU), also set the seed for it
+        torch.cuda.manual_seed_all(args.seed)
+    
+    # Create output file / folder
+    output_filename = f"Magpie_{args.model_path.split('/')[-1]}_{args.total_prompts}_{args.timestamp}_ins.json"
+    if not args.job_name:
+        if not os.path.exists(args.output_folder):
+            os.makedirs(args.output_folder)
+        output_dir = f"{args.output_folder}/{output_filename}"
+    else:
+        output_dir = f"{args.output_folder}/{args.job_name}/{output_filename}"
+    
+    # Set the device
+    os.environ["CUDA_VISIBLE_DEVICES"] = args.device
+    # Set generation engine
     if args.engine == "vllm":
-        output = llm.generate(pre_query_template, sampling_params)
-        output_list = output[0].outputs
-        if args.shuffle:
-            random.shuffle(output_list)
-    
+        # Create vllm instance  
+        llm = LLM(model=args.model_path, 
+                dtype=args.dtype,
+                trust_remote_code=True,
+                gpu_memory_utilization=args.gpu_memory_utilization,
+                max_model_len=args.max_model_len,
+                swap_space=args.swap_space,
+                tensor_parallel_size=args.tensor_parallel_size,
+                seed=args.seed if args.seed is not None else args.timestamp,
+                enable_prefix_caching=True)
     elif args.engine == "hf":
-        input = tokenizer.encode(pre_query_template, add_special_tokens=False, return_tensors="pt").to(torch.cuda.current_device())
-        # Gemma-2 bug, so we cannot set num_return_sequences > 1. 
-        # Instead, we repeat the input n times.
-        inputs = input.repeat(args.n, 1).to(torch.cuda.current_device())
-        output = model.generate(inputs,
-                                tokenizer=tokenizer, 
-                                do_sample=True, 
-                                temperature=args.temperature, 
-                                top_p=args.top_p, 
-                                max_length=args.max_tokens, 
-                                num_return_sequences=1,
-                                )
-        # Remove the input from the output
-        output_list = tokenizer.batch_decode(output[i][len(inputs[0]):] for i in range(args.n))
-        # Stop on the first stop token
-        for i, completion in enumerate(output_list):
-            for stop_token in stop_tokens:
-                if stop_token in completion:
-                    output_list[i] = completion[:completion.index(stop_token)]
-                                             
-    # Save outputs
-    for i, completion in enumerate(output_list):
-        if args.engine == "vllm":
-            instruction = completion.text.strip()
-        elif args.engine == "hf":
-            instruction = completion.strip()
-
-        if args.sanitize:
-            sanitized_instruction, class_num = str_utils.instruction_post_process(instruction, args.model_path)
-            result = {
-                "id": rounds * args.n + i,
-                "pre_query_template": f"{pre_query_template}",
-                "raw_instruction": instruction,
-                "instruction": sanitized_instruction,
-                "instruction_sanitize_class_num": class_num,
-                "response": None,
-                "created": int(time.time()),
-                "gen_input_configs": {
-                    "temperature": args.temperature,
-                    "top_p": args.top_p,
-                    "input_generator": f"{args.model_path}",
-                    "seed": args.seed,
-                },
-                "gen_response_configs": None,
-            }
+        # Load the model and tokenizer
+        tokenizer = AutoTokenizer.from_pretrained(args.model_path)
+        model = AutoModelForCausalLM.from_pretrained(
+            args.model_path,
+            device_map={'':torch.cuda.current_device()},
+            torch_dtype=torch.bfloat16 if args.dtype == "bfloat16" else torch.float16
+        )
+    
+    
+    # Obtain config from configs/model_configs.json
+    with open("../configs/model_configs.json", "r", encoding="utf-8") as f:
+        model_configs = json.load(f)
+        model_config = model_configs[args.model_path]
+        if args.control_tasks:
+            pre_query_template = model_config[f"pre_query_template_{args.control_tasks}"]
+            print("Control task: {args.control_tasks}")
+        elif args.system_prompt:
+            pre_query_template = model_config["pre_query_template_with_system_prompt"]
+            print("System prompt enabled. Warning: The system prompt may degrade the performance.")
         else:
-            result = {
-                "id": rounds * args.n + i,
-                "pre_query_template": f"{pre_query_template}",
-                "instruction": instruction,
-                "response": None,
-                "created": int(time.time()),
-                "gen_input_configs": {
-                    "temperature": args.temperature,
-                    "top_p": args.top_p,
-                    "input_generator": f"{args.model_path}",
-                    "seed": args.seed,
-                },
-                "gen_response_configs": None,
-            }
-        results.append(result)
+            pre_query_template = model_config["pre_query_template"]
+        stop_tokens = model_config["stop_tokens"]
+        stop_tokens_assistant = model_config["stop_tokens_assistant"]
+        stop_tokens += stop_tokens_assistant
+        stop_token_ids = model_config["stop_token_ids"]
+    
+        # Process early stopping. We found that sometimes LLM will generate responses immediately after the \n token.
+        if args.early_stopping:
+            stop_tokens.append("\n")
+    
+        print(f"Pre-query template: {pre_query_template}")
+        print(f"Stop tokens: {stop_tokens}")
+        print(f"Stop token ids: {stop_token_ids}")
+    
+    
+    # Initialize logits processors for llama-3.1
+    def de_md_logits_processor_for_llama3_1(token_ids, logits):
+        # Only process the initial logits
+        if len(token_ids) == 0:
+            logits[2] = -9999.999 # "#": 2,
+            logits[567] = -9999.999 # "##": 567,
+            logits[14711] = -9999.999 # "###": 14711,
+            logits[827] = -9999.999 # "####": 827,
+    
+        return logits
+    
+    if args.logits_processor and "llama-3.1" in args.model_path.lower():
+        logits_processor = de_md_logits_processor_for_llama3_1
+        print(f"Logits processor applied: {logits_processor}")
+    else:
+        logits_processor = None
+        
+    # Define sampling parameters
+    sampling_params = SamplingParams(
+        n=args.n,
+        temperature=args.temperature,
+        top_p=args.top_p,
+        max_tokens=args.max_tokens,
+        skip_special_tokens=args.skip_special_tokens,
+        stop=stop_tokens,
+        stop_token_ids=stop_token_ids,
+        logits_processors=[logits_processor] if logits_processor else None
+    )
+    
+    ################
+    # Generate outputs
+    ################
+    results = []
+    for rounds in tqdm(range(args.repeat)):
+        # Generate outputs
+        if args.engine == "vllm":
+            output = llm.generate(pre_query_template, sampling_params)
+            output_list = output[0].outputs
+            if args.shuffle:
+                random.shuffle(output_list)
+        
+        elif args.engine == "hf":
+            input = tokenizer.encode(pre_query_template, add_special_tokens=False, return_tensors="pt").to(torch.cuda.current_device())
+            # Gemma-2 bug, so we cannot set num_return_sequences > 1. 
+            # Instead, we repeat the input n times.
+            inputs = input.repeat(args.n, 1).to(torch.cuda.current_device())
+            output = model.generate(inputs,
+                                    tokenizer=tokenizer, 
+                                    do_sample=True, 
+                                    temperature=args.temperature, 
+                                    top_p=args.top_p, 
+                                    max_length=args.max_tokens, 
+                                    num_return_sequences=1,
+                                    )
+            # Remove the input from the output
+            output_list = tokenizer.batch_decode(output[i][len(inputs[0]):] for i in range(args.n))
+            # Stop on the first stop token
+            for i, completion in enumerate(output_list):
+                for stop_token in stop_tokens:
+                    if stop_token in completion:
+                        output_list[i] = completion[:completion.index(stop_token)]
+                                                 
+        # Save outputs
+        for i, completion in enumerate(output_list):
+            if args.engine == "vllm":
+                instruction = completion.text.strip()
+            elif args.engine == "hf":
+                instruction = completion.strip()
+    
+            if args.sanitize:
+                sanitized_instruction, class_num = str_utils.instruction_post_process(instruction, args.model_path)
+                result = {
+                    "id": rounds * args.n + i,
+                    "pre_query_template": f"{pre_query_template}",
+                    "raw_instruction": instruction,
+                    "instruction": sanitized_instruction,
+                    "instruction_sanitize_class_num": class_num,
+                    "response": None,
+                    "created": int(time.time()),
+                    "gen_input_configs": {
+                        "temperature": args.temperature,
+                        "top_p": args.top_p,
+                        "input_generator": f"{args.model_path}",
+                        "seed": args.seed,
+                    },
+                    "gen_response_configs": None,
+                }
+            else:
+                result = {
+                    "id": rounds * args.n + i,
+                    "pre_query_template": f"{pre_query_template}",
+                    "instruction": instruction,
+                    "response": None,
+                    "created": int(time.time()),
+                    "gen_input_configs": {
+                        "temperature": args.temperature,
+                        "top_p": args.top_p,
+                        "input_generator": f"{args.model_path}",
+                        "seed": args.seed,
+                    },
+                    "gen_response_configs": None,
+                }
+            results.append(result)
+    
+        # Save the checkpoints every args.checkpoint_every rounds
+        if rounds % args.checkpoint_every == 0:
+            with open(output_dir, "w") as f:
+                json.dump(results, f, indent=2)
+            print(f"Checkpoint saved. Total prompts: {len(results)}")
+    
+    # Save the final results
+    with open(output_dir, "w") as f:
+        json.dump(results, f, indent=2)
+    
+    print(f"Instruction generated from {args.model_path}. Total prompts: {len(results)}")
 
-    # Save the checkpoints every args.checkpoint_every rounds
-    if rounds % args.checkpoint_every == 0:
-        with open(output_dir, "w") as f:
-            json.dump(results, f, indent=2)
-        print(f"Checkpoint saved. Total prompts: {len(results)}")
-
-# Save the final results
-with open(output_dir, "w") as f:
-    json.dump(results, f, indent=2)
-
-print(f"Instruction generated from {args.model_path}. Total prompts: {len(results)}")
+# Run the main function
+if __name__ == "__main__":
+    main()
