@@ -93,8 +93,8 @@ The toy example can be found in [`demo.ipynb`](demo.ipynb). Have fun!
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-## Batched Data Generation
-We use Llama-3-8B-Instruct as an example to demonstrate the batched data generation process. To run batched generation, you can simply run:
+## Batched SFT Data Generation
+We use Llama-3-8B-Instruct as an example to demonstrate the batched SFT data generation process. To run batched generation, you can simply run:
 ```
 cd scripts
 bash magpie.sh
@@ -123,7 +123,7 @@ cd scripts
 bash unitag.sh ***_ins_res.json safety 0
 ```
 ### 2. Data Concatenation and Converting
-You may generate datasets with different generation configurations. We provide a Jupyter notebook [here](data/data_concatenation.ipynb) for concatenating all datasets and converting them to ShareGPT format, which is fully supported by [Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) for fine-tuning.
+You may generate datasets with different generation configurations. We provide a Jupyter notebook [here](data_sft/data_concatenation.ipynb) for concatenating all datasets and converting them to ShareGPT format, which is fully supported by [Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) for fine-tuning.
 
 ### 3. Removing Repetition
 Once you have a full dataset converted to ShareGPT format, you can calculate the minimum neighbor distance of each instruction and remove repetitions. To do so, run:
@@ -134,7 +134,13 @@ python gen_dis.py --input_file ***_sharegpt.jsonl
 where `***_sharegpt.jsonl` is the dataset path obtained in the previous step. The Python script will take care of building the FAISS index and calculating the minimum distance. 
 
 ### 4. Design and Apply Your Filter
-We provide a Jupyter notebook [here](data/data_filter.ipynb) for simple filtering. You can adjust the filtering parameters to design and apply your own filter based on your needs.
+We provide a Jupyter notebook [here](data_sft/data_filter.ipynb) for simple filtering. You can adjust the filtering parameters to design and apply your own filter based on your needs.
+
+## Preference Data Generation
+
+To generate preference data, first prepare filtered instructions following the steps outlined above. For the expected format, please refer to our example [here](data_po/example_instructions.jsonl).
+
+Next, please use our provided scripts [here](scripts/magpie_example_po.sh) to generate multiple responses and compute their corresponding rewards. Finally, your can process the data and upload it to Huggingface using [this Jupyter notebook](data_po/process_po.ipynb).
 
 ## Fine-tuning
 Please take a look at the [recipes](recipes/) directory for instructions and our Magpie model recipes.
