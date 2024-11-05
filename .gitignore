@@ -163,6 +163,8 @@ cython_debug/
 data/obtain_labels_from_exisiting_files.ipynb
 data/final_dataset_process.ipynb
 Magpie Data/
-data_po/
+data_po_private/
+data_po_bon/
 data_gemma/
 data_llama3.1/
+data_qwen2.5/
