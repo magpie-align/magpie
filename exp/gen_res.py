@@ -38,7 +38,7 @@ def get_args():
     parser.add_argument("--temperature", type=float, default=0)
     parser.add_argument("--top_p", type=float, default=1.0)
     parser.add_argument("--repetition_penalty", type=float, default=1.0)
-    parser.add_argument("--tokenizer_template", type=bool, default=False, help="Use tokenizer template for generating the response.")
+    parser.add_argument("--tokenizer_template", type=bool, default=True, help="Use tokenizer template for generating the response.")
     parser.add_argument("--use_tokenizer_template", action="store_true", dest="tokenizer_template")
 
     return parser.parse_args()

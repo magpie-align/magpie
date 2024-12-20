@@ -274,7 +274,7 @@ def instruction_post_process(instruction, model_path):
 
         return instruction, class_num
 
-    elif "llama-3.1" in model_path.lower():
+    elif "llama-3" in model_path.lower():
         # remove the prefix
         instruction = remove_prefix(instruction)
         # find mcq problems
@@ -282,12 +282,12 @@ def instruction_post_process(instruction, model_path):
         assistant_markers = ["Answer:", "Answers:", "The answer is", "Correct answer", "The correct answer", "Answer is", "Explanation:", "Here are some", "Solution Approach:", "Solution:"]
         assistant_pattern = r'(?:' + '|'.join(assistant_markers) + ')s?:'
         assistant_match = re.search(assistant_pattern, instruction) # Exact match, no re.IGNORECASE
-        print(f"Assistant match: {assistant_match}")
+        # print(f"Assistant match: {assistant_match}")
 
         step_makers = ["# Step 1", "## Step 1", "### Step 1"]
         step_pattern = r'(?:' + '|'.join(step_makers) + r'):?'
         step_match = re.search(step_pattern, instruction) # Exact match, no re.IGNORECASE
-        print(f"Step match: {step_match}")
+        # print(f"Step match: {step_match}")
 
         # TODO
         # if is_mcq:
@@ -360,3 +360,15 @@ def instruction_post_process(instruction, model_path):
     
     else:
         return instruction, 0
+
+
+# Initialize logits processors for llama-3.1
+def de_md_logits_processor_for_llama3_1(token_ids, logits):
+    # Only process the initial logits
+    if len(token_ids) == 0:
+        logits[2] = -9999.999 # "#": 2,
+        logits[567] = -9999.999 # "##": 567,
+        logits[14711] = -9999.999 # "###": 14711,
+        logits[827] = -9999.999 # "####": 827,
+
+    return logits
