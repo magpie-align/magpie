@@ -1,5 +1,13 @@
 # Dataset Navigation 🧭
 
+## Raw and Filtered Datasets
+
+### [**Meta Llama 3.3**](https://huggingface.co/collections/meta-llama/llama-33-67531d5c405ec5d08a852000)
+|Model Name | Dataset | Type | Description |
+|-------------|:-------|:-------|:-------|
+| [Llama 3.3 70B Instruct](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct) | [Magpie-Llama-3.3-Pro-1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.3-Pro-1M-v0.1) | SFT | 1M Raw conversations built with Meta Llama 3.3 70B.
+| [Llama 3.3 70B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3.3-70B-Instruct) | [Magpie-Llama-3.3-Pro-500K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.3-Pro-500K-Filtered) | SFT | Apply a filter and select 500K high quality conversations.
+
 ### [**Meta Llama 3.1**](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)
 |Model Name | Dataset | Type | Description |
 |-------------|:-------|:-------|:-------|
@@ -49,3 +57,21 @@
 |-------------|:-------|:-------|:-------|
 | [Gemma-2-27b-it](https://huggingface.co/google/gemma-2-27b-it) | [Magpie-Gemma2-Pro-534K](https://huggingface.co/datasets/Magpie-Align/Magpie-Gemma2-Pro-534K-v0.1) | SFT | 534K conversations built with Gemma-2-27b-it.
 | [Gemma-2-27b-it](https://huggingface.co/google/gemma-2-27b-it) | [Magpie-Gemma2-Pro-200K-Filtered](https://huggingface.co/datasets/Magpie-Align/Magpie-Gemma2-Pro-200K-Filtered) | SFT | Apply a filter and select 200K conversations.
+
+---
+
+## Domain Datasets
+
+### Reasoning
+|Model | Dataset | Type | Description |
+|-------------|:-------|:-------|:-------|
+| Qwen2-72B-Instruct + Llama-3-70B-Instruct | [Magpie-Reasoning-150K](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-150K) | SFT | 150K conversations built with Qwen2-72B-Instruct + Llama-3-70B-Instruct.
+| Llama3.1-70B-Instruct + Llama3.3-70B-Instruct | [Magpie-LlamaCoT-250K](https://huggingface.co/datasets/Magpie-Align/Magpie-LlamaCoT-250K) | SFT | 250K conversations built with Llama3.1-70B-Instruct + Llama3.3-70B-Instruct.
+
+### Coding & Debugging
+
+Coming Soon.
+
+### Math
+
+Coming Soon.

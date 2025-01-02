@@ -14,10 +14,12 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## 🐦 News
+- [2025/01/01] Magpie LlamaCoT dataset is out! [250K](https://huggingface.co/datasets/Magpie-Align/Magpie-LlamaCoT-250K) from Llama-3.1-70B-Instruct and Llama-3.3-70B-Instruct! 
+- [2025/01/01] Magpie Llama-3.3 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.3-Pro-1M-v0.1) from Llama-3.3-70B-Instruct! Happy New Year!
 - [2024/10/20] Magpie Qwen2.5 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) from Qwen2.5 72B!
 - [2024/09/17] Ship two new models with SOTA performance: 𝙼𝚊𝚐𝚙𝚒𝚎𝙻𝙼-𝙲𝚑𝚊𝚝 (4B & 8B)! See collection [here](https://huggingface.co/collections/Magpie-Align/magpielm-66e2221f31fa3bf05b10786a)!
 - [2024/08/19] Three preference optimization datasets, [Magpie-Air-DPO-100K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Air-DPO-100K-v0.1), [Magpie-Pro-DPO-100K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Pro-DPO-100K-v0.1), and [Magpie-Llama-3.1-Pro-DPO-100K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-DPO-100K-v0.1) are out! 
-- [2024/07/25] Magpie Llama-3.1 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-1M-v0.1) from Meta-Llama-3.1-70B-Instruct! More friendly license compared with Llama-3 😃!
+- [2024/07/25] Magpie Llama-3.1 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.1-Pro-1M-v0.1) from Llama-3.1-70B-Instruct! More friendly license compared with Llama-3 😃!
 - [2024/07/21] Magpie Gemma2 dataset is out! [534K](https://huggingface.co/collections/Magpie-Align/magpie-gemma2-datasets-669da6aff21b09fdcecbd6ea) from Gemma-2-27b-it!
 - [2024/07/19] [Llama-3-8B-Magpie-Align-v0.3](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.3) is out with enhanced Chinese question-answering ability, thanks to our new [Chinese instruction dataset](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2-Pro-200K-Chinese)!
 - [2024/07/14] [Llama-3-8B-Magpie-Align-v0.2](https://huggingface.co/Magpie-Align/Llama-3-8B-Magpie-Align-v0.2) is out with enhanced reasoning ability, thanks to our new [reasoning booster dataset](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-150K)!
@@ -33,6 +35,7 @@ Currently, Magpie has been tested on the **Llama-3**, **Qwen2**, **Phi 3** and *
 
 |Model Family | Magpie | Magpie Scripts | Datasets | Size |
 |-------------|:------:|:-------|:-------|:-------|
+| [Llama 3.3](https://huggingface.co/collections/meta-llama/llama-33-67531d5c405ec5d08a852000)     | ✅ | [70B](scripts/magpie-llama3.3-70b.sh) | [70B](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.3-Pro-1M-v0.1) | 1M |
 | [Llama 3.1](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f)     | ✅ * | [8B](scripts/magpie-llama3.1-8b.sh),[70B](scripts/magpie-llama3.1-70b.sh) | [70B](https://huggingface.co/collections/Magpie-Align/magpie-llama31-datasets-66a45ed727be07f53c8ff294),[405B(Argilla)](https://huggingface.co/datasets/argilla/magpie-ultra-v0.1) | 1M |
 | [Llama 3](https://huggingface.co/collections/meta-llama/meta-llama-3-66214712577ca38149ebb2b6)     | ✅ | [8B](scripts/magpie-llama3-8b.sh),[70B](scripts/magpie-llama3-70b.sh) | [8B](https://huggingface.co/collections/Magpie-Align/magpie-air-6666b11a32021655a27f86c0),[70B](https://huggingface.co/collections/Magpie-Align/magpie-pro-6666b0e713e5f5c09554876f) | 3M + 1M |
 | [Qwen2.5](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e)     | ✅ | [3B](scripts/magpie-qwen2.5-3b.sh),[7B](scripts/magpie-qwen2.5-7b.sh),[14B](scripts/magpie-qwen2.5-14b.sh),[32B](scripts/magpie-qwen2.5-32b.sh),[72B](scripts/magpie-qwen2.5-72b.sh) | [72B](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) | 1M | 
