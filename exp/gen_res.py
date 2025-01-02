@@ -7,7 +7,6 @@ import requests
 import concurrent.futures
 from time import sleep
 from tqdm import tqdm
-from transformers import AutoTokenizer
 from utils import load_dataset_from_file, save_dataset, make_api_request_with_retry, get_conversation_template
 from vllm import LLM, SamplingParams
 from transformers import AutoTokenizer, AutoModelForCausalLM

@@ -1,9 +1,9 @@
 model_path=${1:-"Qwen/Qwen2.5-Math-72B-Instruct"}
 total_prompts=${2:-1000}
-ins_topp=${3:-1}
+ins_topp=${3:-0.9}
 ins_temp=${4:-0.6}
-res_topp=${5:-1}
-res_temp=${6:-0}
+res_topp=${5:-0.9}
+res_temp=${6:-0.6}
 res_rep=1
 device="0,1,2,3"
 tensor_parallel=4
@@ -45,6 +45,7 @@ CUDA_VISIBLE_DEVICES=$device python ../exp/gen_ins.py \
     --temperature $ins_temp \
     --tensor_parallel $tensor_parallel \
     --gpu_memory_utilization $gpu_memory_utilization \
+    --flaming_tokens \
     --n $n \
     --job_name $job_name \
     --timestamp $timestamp

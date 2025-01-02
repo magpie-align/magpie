@@ -362,7 +362,7 @@ def instruction_post_process(instruction, model_path):
         return instruction, 0
 
 
-# Initialize logits processors for llama-3.1
+# Define logits processor for llama-3.1 for de-markdown
 def de_md_logits_processor_for_llama3_1(token_ids, logits):
     # Only process the initial logits
     if len(token_ids) == 0:
@@ -371,4 +371,14 @@ def de_md_logits_processor_for_llama3_1(token_ids, logits):
         logits[14711] = -9999.999 # "###": 14711,
         logits[827] = -9999.999 # "####": 827,
 
+    return logits
+
+
+# Define logits processor for flaming initial tokens
+def flaming_tokens(token_ids, logits):
+    # Only process the initial logits
+    if len(token_ids) == 0:
+        # Slightly increase the temperature for the first token
+        logits = logits / 1.2
+    
     return logits
