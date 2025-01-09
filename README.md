@@ -14,7 +14,7 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## 🐦 News
-- [2025/01/01] Magpie LlamaCoT dataset is out! [250K](https://huggingface.co/datasets/Magpie-Align/Magpie-LlamaCoT-250K) from Llama-3.1-70B-Instruct and Llama-3.3-70B-Instruct! 
+- [2025/01/01] Magpie Reasoning V2 dataset is out! [250K]([https://huggiK](https://huggingface.co/collections/Magpie-Align/magpie-reasoning-datasets-67790a13b91035bc42693885)) from Llama, Skywork-o1 and QwQ! This time, we focus on CoT 🤯
 - [2025/01/01] Magpie Llama-3.3 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.3-Pro-1M-v0.1) from Llama-3.3-70B-Instruct! Happy New Year!
 - [2024/10/20] Magpie Qwen2.5 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) from Qwen2.5 72B!
 - [2024/09/17] Ship two new models with SOTA performance: 𝙼𝚊𝚐𝚙𝚒𝚎𝙻𝙼-𝙲𝚑𝚊𝚝 (4B & 8B)! See collection [here](https://huggingface.co/collections/Magpie-Align/magpielm-66e2221f31fa3bf05b10786a)!
