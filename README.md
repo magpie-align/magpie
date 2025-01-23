@@ -4,7 +4,7 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-paper-b31b1b.svg)](https://arxiv.org/abs/2406.08464) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Data License](https://img.shields.io/badge/Data%20License-CC%20By%20NC%204.0-red.svg)](https://huggingface.co/Magpie-Align) [![Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue)](https://huggingface.co/spaces/davanstrien/magpie)
 
-This is the official repository for "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)". Magpie generates high-quality alignment data by prompting aligned LLMs with their pre-query templates. Unlike many existing synthetic data generation methods, Magpie doesn't rely on prompt engineering or seed questions for generating synthetic data. Instead, it uses the prompt template of an aligned LLM to generate both the user query and an LLM response.
+This is the official repository for ICLR 2025 paper "[Alignment Data Synthesis from Scratch by Prompting Aligned LLMs with Nothing](https://arxiv.org/abs/2406.08464)". Magpie generates high-quality alignment data by prompting aligned LLMs with their pre-query templates. Unlike many existing synthetic data generation methods, Magpie doesn't rely on prompt engineering or seed questions for generating synthetic data. Instead, it uses the prompt template of an aligned LLM to generate both the user query and an LLM response.
 
 - 🤗 [**Huggingface (Models and Datasets)**](https://huggingface.co/Magpie-Align)
 - 🧭 [**Dataset Navigation**](navigation.md)
@@ -14,7 +14,8 @@ This is the official repository for "[Alignment Data Synthesis from Scratch by P
 - 🐦 [**Chat with Magpie**](https://huggingface.co/spaces/flydust/Chat-with-Magpie)
 
 ## 🐦 News
-- [2025/01/01] Magpie Reasoning V2 dataset is out! [250K]([https://huggiK](https://huggingface.co/collections/Magpie-Align/magpie-reasoning-datasets-67790a13b91035bc42693885)) from Llama, Skywork-o1 and QwQ! This time, we focus on CoT 🤯
+- [2025/01/22] Magpie paper is accepted by ICLR 2025! 
+- [2025/01/09] Magpie Reasoning V2 dataset is out! [250K]([https://huggiK](https://huggingface.co/collections/Magpie-Align/magpie-reasoning-datasets-67790a13b91035bc42693885)) from Llama, Skywork-o1 and QwQ! This time, we focus on CoT 🤯
 - [2025/01/01] Magpie Llama-3.3 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Llama-3.3-Pro-1M-v0.1) from Llama-3.3-70B-Instruct! Happy New Year!
 - [2024/10/20] Magpie Qwen2.5 dataset is out! [1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) from Qwen2.5 72B!
 - [2024/09/17] Ship two new models with SOTA performance: 𝙼𝚊𝚐𝚙𝚒𝚎𝙻𝙼-𝙲𝚑𝚊𝚝 (4B & 8B)! See collection [here](https://huggingface.co/collections/Magpie-Align/magpielm-66e2221f31fa3bf05b10786a)!
