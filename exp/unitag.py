@@ -38,7 +38,7 @@ def get_args():
     parser.add_argument("--device", type=str, default="0")
     parser.add_argument("--tensor_parallel_size", type=int, default=1)
     parser.add_argument("--dtype", type=str, default="bfloat16", choices=["float16", "bfloat16"])
-    parser.add_argument("--quantization", type=str, default="fp8", choices=["fp8", "awq", "gptq", None])
+    parser.add_argument("--quantization", type=str, default="fp8", choices=["fp8", "awq", "gptq", "None"])
     parser.add_argument("--kv_cache_dtype", type=str, default="auto", choices=["auto", "fp8"])
     parser.add_argument("--max_model_len", type=int, default=4096)
     parser.add_argument("--gpu_memory_utilization", type=float, default=0.95)
@@ -318,7 +318,7 @@ if __name__ == "__main__":
 
                 llm = LLM(model=MODEL_NAME if not args.tag_mission == "safety" else args.guard_model_path,
                             dtype=args.dtype,
-                            quantization=args.quantization,
+                            quantization=args.quantization if args.quantization != "None" else None,
                             kv_cache_dtype=args.kv_cache_dtype,
                             max_model_len=args.max_model_len,
                             tensor_parallel_size=args.tensor_parallel_size,
