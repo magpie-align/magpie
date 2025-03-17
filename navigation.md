@@ -1,6 +1,6 @@
 # Dataset Navigation 🧭
 
-## Raw and Filtered Datasets
+## Alignment Datasets
 
 ### [**Meta Llama 3.3**](https://huggingface.co/collections/meta-llama/llama-33-67531d5c405ec5d08a852000)
 |Model Name | Dataset | Type | Description |
@@ -62,16 +62,27 @@
 
 ## Domain Datasets
 
-### Reasoning
+### CoT Reasoning
 |Model | Dataset | Type | Description |
 |-------------|:-------|:-------|:-------|
-| Qwen2-72B-Instruct + Llama-3-70B-Instruct | [Magpie-Reasoning-150K](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-150K) | SFT | 150K conversations built with Qwen2-72B-Instruct + Llama-3-70B-Instruct.
-| Llama3.1-70B-Instruct + Llama3.3-70B-Instruct | [Magpie-LlamaCoT-250K](https://huggingface.co/datasets/Magpie-Align/Magpie-LlamaCoT-250K) | SFT | 250K conversations built with Llama3.1-70B-Instruct + Llama3.3-70B-Instruct.
+| Qwen2-72B-Instruct (instruction) + Llama-3-70B-Instruct (response) | [Magpie-Reasoning-V1-150K](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V1-150K) | SFT | 150K conversations built with Qwen2-72B-Instruct + Llama-3-70B-Instruct.
+| Qwen2-72B-Instruct (instruction) + QwQ-Preview (response) | [Magpie-Reasoning-V1-150K-CoT-QwQ](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V1-150K-CoT-QwQ) | SFT | 150K conversations built with Qwen2-72B-Instruct + QwQ-Preview.
+| Qwen2-72B-Instruct (instruction) + Skywork-O1-Llama-3.1-8B (response) | [Magpie-Reasoning-V1-150K-CoT-Skywork-O1-Llama-3.1-8B](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V1-150K-CoT-Skywork-O1-Llama-3.1-8B) | SFT | 150K conversations built with Qwen2-72B-Instruct + Skywork-O1-Llama-3.1-8B.
+| Qwen2-72B-Instruct (instruction) + QwQ-Preview (response) | [Magpie-Reasoning-V1-150K-CoT-Deepseek-R1-Llama-70B](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V1-150K-CoT-Deepseek-R1-Llama-70B) | SFT | 150K conversations built with Qwen2-72B-Instruct + Deepseek-R1-Llama-70B.
+| Llama3.1/3.3-70B-Instruct | [Magpie-Reasoning-V2-250K-CoT-Llama3](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V2-250K-CoT-Llama3) | SFT | 250K conversations built with Llama3.1-70B-Instruct + Llama3.3-70B-Instruct.
+| Llama3.1/3.3-70B-Instruct (instruction) + QwQ-Preview (response) | [Magpie-Reasoning-V2-250K-CoT-QwQ](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V2-250K-CoT-QwQ) | SFT | 250K conversations built with Llama3.1/3.3-70B-Instruct + QwQ-Preview.
+| Llama3.1/3.3-70B-Instruct (instruction) + Skywork-O1-Llama-3.1-8B (response) | [Magpie-Reasoning-V2-250K-CoT-Skywork-O1-Llama-3.1-8B](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V2-250K-CoT-Skywork-O1-Llama-3.1-8B) | SFT | 250K conversations built with Llama3.1/3.3-70B-Instruct + Skywork-O1-Llama-3.1-8B.
+| Llama3.1/3.3-70B-Instruct (instruction) + Deepseek-R1-Llama-70B (response) | [Magpie-Reasoning-V2-250K-CoT-Deepseek-R1-Llama-70B](https://huggingface.co/datasets/Magpie-Align/Magpie-Reasoning-V2-250K-CoT-Deepseek-R1-Llama-70B) | SFT | 250K conversations built with Llama3.1/3.3-70B-Instruct + Deepseek-R1-Llama-70B.
+
 
 ### Coding & Debugging
 
-Coming Soon.
+|Model | Dataset | Type | Description |
+|-------------|:-------|:-------|:-------|
+| [Qwen2.5 Coder 32B Instruct](https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct) | [Magpie-Qwen2.5-Coder-Pro-300K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Coder-Pro-300K-v0.1) | SFT | 300K Raw conversations built with Qwen2.5 Coder 32B Instruct.
 
 ### Math
 
-Coming Soon.
+|Model | Dataset | Type | Description |
+|-------------|:-------|:-------|:-------|
+| [Qwen2.5 Math 72B Instruct](https://huggingface.co/Qwen/Qwen2.5-Math-72B-Instruct) | [Magpie-Qwen2.5-Math-Pro-300K-v0.1](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Math-Pro-300K-v0.1) | SFT | 300K Raw conversations built with Qwen2.5 Math 72B Instruct.
