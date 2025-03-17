@@ -30,7 +30,7 @@
 | [Llama 3 8B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) | [Magpie-Air-MT-300K](https://huggingface.co/datasets/Magpie-Align/Magpie-Air-MT-300K-v0.1) | SFT | Select 300K difficult questions and extend to multi-turn conversations.
 | [Llama 3 8B Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) | [Magpie-Air-DPO-100K](https://huggingface.co/datasets/Magpie-Align/Magpie-Air-DPO-100K-v0.1) | DPO | DPO dataset via Best-of-N sampling and rewards.
 
-### [**Qwen2.5**]([https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e))
+### [**Qwen2.5**](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e)
 |Model Name | Dataset | Type | Description |
 |-------------|:-------|:-------|:-------|
 | [Qwen2.5 72B Instruct](https://huggingface.co/Qwen/Qwen2.5-72B-Instruct) | [Magpie-Qwen2.5-Pro-1M](https://huggingface.co/datasets/Magpie-Align/Magpie-Qwen2.5-Pro-1M-v0.1) | SFT | 1M Raw conversations built with Qwen2.5 72B Instruct.
